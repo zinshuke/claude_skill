@@ -1,0 +1,320 @@
+{
+	"guide": "sitekit",
+	"title": "SiteKit Admin Guide",
+	"scope": {
+		"feature": "SiteKit (pkg_sitekit_core 1.2.0)",
+		"paths": [
+			"administrator/components/com_sitekit",
+			"plugins/sitekit/analytics",
+			"plugins/sitekit/searchconsole",
+			"plugins/sitekit/tagmanager",
+			"plugins/sitekit/verification",
+			"plugins/system/sitekit",
+			"media/com_sitekit"
+		]
+	},
+	"answers": {
+		"audience": "site owner / non-technical admin",
+		"guide_type": "task-based",
+		"output": "claude-doc",
+		"language": "en",
+		"base_url": "http://localhost:3000",
+		"role": "Super User (admin)",
+		"privacy_blur": [
+			"client id/secret"
+		],
+		"domain_shown": "keep localhost, add a note that readers see their own domain",
+		"style": "red box + numbered badge, full page, 1440x900",
+		"outline_approved": "2026-10-15"
+	},
+	"doc": {
+		"url": "https://claude.ai/code/artifact/280d3335-e5b2-47cd-8333-4c982bf5f4a0",
+		"id": "280d3335-e5b2-47cd-8333-4c982bf5f4a0",
+		"tab": "619ca230-5cfc",
+		"body_node": "2092083c-cd43"
+	},
+	"sections": [
+		{
+			"id": "before-you-start",
+			"title": "Before you start",
+			"state_needed": null,
+			"needs_user": [],
+			"shots": [],
+			"status": "written",
+			"setup": "claude"
+		},
+		{
+			"id": "dashboard-tour",
+			"title": "Open SiteKit and read the Dashboard",
+			"state_needed": "not connected (capture first), optionally again when connected",
+			"needs_user": [],
+			"shots": [
+				"dash-01-menu",
+				"dash-02-setup",
+				"dash-03-status",
+				"dash-04-features",
+				"dash-05-search-traffic"
+			],
+			"status": "written",
+			"setup": "claude"
+		},
+		{
+			"id": "connect-trial",
+			"title": "Connect Google: start the trial",
+			"state_needed": "not connected, then trial",
+			"needs_user": [
+				"Sign in with a Google account that owns a Search Console and a GA4 property"
+			],
+			"shots": [
+				"trial-01-start"
+			],
+			"status": "written",
+			"note": "Step 1 (Try with my Google) captured in not-connected state; rest needs the user to start the trial.",
+			"setup": "user",
+			"missing": [
+				"trial-03-banner: needs a working trial service (thepixel.dev /api/sitekit returns 404)"
+			]
+		},
+		{
+			"id": "connect-byo",
+			"title": "Connect Google with your own Google Cloud client",
+			"state_needed": "not connected, trial ended or never started",
+			"needs_user": [
+				"Google Cloud project, consent screen, Web OAuth client with the redirect URI",
+				"Client ID and Secret",
+				"Google Cloud Console screenshots (outside the site)"
+			],
+			"shots": [
+				"byo-01-redirect-uri",
+				"byo-02-credentials",
+				"byo-05-connected"
+			],
+			"status": "written",
+			"setup": "user",
+			"missing": [
+				"byo-03-connect-button: needs credentials saved but not connected (Disconnect, capture, reconnect)"
+			]
+		},
+		{
+			"id": "search-console",
+			"title": "Set up Search Console",
+			"state_needed": "connected with own client",
+			"needs_user": [
+				"Approve the Search Console scope in Google"
+			],
+			"shots": [
+				"sc-01-card",
+				"sc-02-property",
+				"sc-03-connected"
+			],
+			"status": "written",
+			"setup": "user"
+		},
+		{
+			"id": "analytics",
+			"title": "Set up Analytics 4",
+			"state_needed": "connected with own client",
+			"needs_user": [
+				"Approve the Analytics scope in Google",
+				"A GA4 property and Measurement ID"
+			],
+			"shots": [
+				"ga-01-authorize",
+				"ga-03-property",
+				"ga-04-connected"
+			],
+			"status": "written",
+			"setup": "user"
+		},
+		{
+			"id": "tag-manager",
+			"title": "Set up Tag Manager",
+			"state_needed": "connected (trial or own client): the Services form only shows once Google is connected",
+			"needs_user": [],
+			"shots": [
+				"gtm-01-container"
+			],
+			"status": "written",
+			"setup": "user",
+			"missing": [
+				"gtm-02-connected: no GTM container ID saved on this site"
+			]
+		},
+		{
+			"id": "verification",
+			"title": "Verify site ownership",
+			"state_needed": "connected with own client; public URL for the Verified state",
+			"needs_user": [
+				"Approve the Site Verification scope",
+				"A public URL if the Verified screenshot is wanted"
+			],
+			"shots": [
+				"ver-01-authorize"
+			],
+			"status": "written",
+			"setup": "user",
+			"missing": [
+				"ver-03..05: Site Verification scope not authorized; Verified state needs a public URL"
+			]
+		},
+		{
+			"id": "reports",
+			"title": "Use Reports",
+			"state_needed": "connected, properties selected, properties with traffic",
+			"needs_user": [],
+			"shots": [
+				"rep-01-picker",
+				"rep-02-filters",
+				"rep-03-sc-report",
+				"rep-04-tools",
+				"rep-05-ga-report"
+			],
+			"status": "written",
+			"setup": "user"
+		},
+		{
+			"id": "plugins-permissions",
+			"title": "Plugins, public-site tags and permissions",
+			"state_needed": "any",
+			"needs_user": [],
+			"shots": [
+				"plg-01-plugins",
+				"perm-01-options",
+				"perm-02-permissions"
+			],
+			"status": "written",
+			"setup": "claude"
+		},
+		{
+			"id": "troubleshooting",
+			"title": "Troubleshooting",
+			"state_needed": null,
+			"needs_user": [],
+			"shots": [
+				"services-00-not-connected"
+			],
+			"status": "written",
+			"setup": "claude"
+		}
+	],
+	"assets": {
+		"byo-01-redirect-uri": {
+			"asset": "7e09aa1ae4394736ce741b6993eed550",
+			"blob": "blob/9b758d83-fa76"
+		},
+		"byo-02-credentials": {
+			"asset": "6133f9240c0d25bbb7585e4d0d57a09b",
+			"blob": "blob/a14bcfa8-7598"
+		},
+		"dash-01-menu": {
+			"asset": "c9afaee6cfc448c5fe651959d6459697",
+			"blob": "blob/60fce825-a5e1"
+		},
+		"dash-02-setup": {
+			"asset": "37bce10ede78f9e7702c20708c6aa6f8",
+			"blob": "blob/cd3fdb89-815d"
+		},
+		"dash-03-status": {
+			"asset": "3e745c106d95139f17e8c24e94428ba6",
+			"blob": "blob/fe9131a3-f3b8"
+		},
+		"dash-04-features": {
+			"asset": "453e10f5cf56b5014cc7ff2d017d74fe",
+			"blob": "blob/24a529ff-1b81"
+		},
+		"trial-01-start": {
+			"asset": "5fcc686d3b12af018da4f4d68c153c03",
+			"blob": "blob/9b192f3d-8d45"
+		},
+		"services-00-not-connected": {
+			"asset": "77faa08fc7435e9e98e2eeec6e9c8c0a",
+			"blob": "blob/f8abdb3f-a06d"
+		},
+		"reports-00-not-connected": {
+			"asset": "ba3adeafa81e7a2f7dd9dbb9b1f76cad",
+			"blob": null
+		},
+		"byo-05-connected": {
+			"asset": "1c6ec4d83650328054f2bc42adced52f",
+			"blob": "blob/b608cc7e-b1e8"
+		},
+		"sc-01-card": {
+			"asset": "746271e24d8fd83e2c902bbc964b4e2d",
+			"blob": "blob/20fb408e-a736"
+		},
+		"sc-02-property": {
+			"asset": "c43468f286ddf7e061015957328e4619",
+			"blob": "blob/d1358e0d-4560"
+		},
+		"ga-01-authorize": {
+			"asset": "178bbcf03ee2456d317d0494f51d13cb",
+			"blob": "blob/271da530-0ab4"
+		},
+		"gtm-01-container": {
+			"asset": "7949f824ad551c3a269a7cf7370e5092",
+			"blob": "blob/c5549ec5-72a8"
+		},
+		"ver-01-authorize": {
+			"asset": "dc7daa94c7d6406907a422df5ad06c1e",
+			"blob": "blob/e012147d-1d88"
+		},
+		"rep-01-picker": {
+			"asset": "c9be5ac558dea59e6b66e676ac1b00bf",
+			"blob": "blob/3ce31542-403f"
+		},
+		"rep-02-filters": {
+			"asset": "28921823f13aadb32aa044b77684cc1c",
+			"blob": "blob/e8d1f99e-6a54"
+		},
+		"plg-01-plugins": {
+			"asset": "a9fcf334f6ac2e16c8743a1652cf476e",
+			"blob": "blob/ea6ea213-5e33"
+		},
+		"perm-01-options": {
+			"asset": "20d33164bf3fe978163c2369b62b2fae",
+			"blob": "blob/0292a790-c441"
+		},
+		"perm-02-permissions": {
+			"asset": "f24f56c70b8244a40268058c8270e967",
+			"blob": "blob/df26f129-c918"
+		},
+		"dash-05-search-traffic": {
+			"asset": "51defd48b1c7c3bc3ca49df4206ec1b1",
+			"blob": "blob/63afa0ce-daa7"
+		},
+		"sc-03-connected": {
+			"asset": "1666648a919351108135c0ed3827104a",
+			"blob": "blob/8c236d16-acba"
+		},
+		"ga-03-property": {
+			"asset": "80226d58ce6aff4e252675d829fccc98",
+			"blob": "blob/f281fca8-e62e"
+		},
+		"ga-04-connected": {
+			"asset": "45f78d5cf861dcecd20872c3e142a385",
+			"blob": "blob/1e12f878-1dc2"
+		},
+		"rep-03-sc-report": {
+			"asset": "d24bd5c2942b3947b5682fff91a789e0",
+			"blob": "blob/b7c25ea2-bd96"
+		},
+		"rep-04-tools": {
+			"asset": "a8c5254ca98b46f596bae3352f669090",
+			"blob": "blob/753a078f-525b"
+		},
+		"rep-05-ga-report": {
+			"asset": "15fe06960951087788c52be114998872",
+			"blob": "blob/e49ce00d-79f9"
+		}
+	},
+	"changes": [],
+	"gaps_found": [
+		"Trial service https://thepixel.dev/api/sitekit/* returns 404 (Joomla 404 page)",
+		"Options screen title shows untranslated key com_sitekit_configuration",
+		"report.clearCache task and 'Refresh all' string have no button",
+		"Settings submenu visible to users without core.admin (redirected to Dashboard)",
+		"Analytics 'Top pages' table header is cut off ('SESSION') and rows are not sorted by sessions",
+		"Dashboard Search traffic header: the 'View Search Console report' button runs into the description text"
+	],
+	"output_local": "docs/admin-guides/sitekit/sitekit-admin-guide.md"
+}

@@ -1,0 +1,239 @@
+{
+	"guide": "articles",
+	"title": "Joomla Articles Guide",
+	"scope": {
+		"feature": "Joomla core Articles (com_content), everyday tasks",
+		"paths": [
+			"administrator/components/com_content"
+		]
+	},
+	"answers": {
+		"audience": "content staff / editors",
+		"guide_type": "task-based, everyday tasks",
+		"output": "claude-doc + local markdown",
+		"language": "en",
+		"base_url": "http://localhost:3000",
+		"role": "Super User (admin)",
+		"privacy_blur": [],
+		"domain_shown": "keep localhost, add a note that readers see their own domain",
+		"style": "red box + numbered badge, full page, 1440x900",
+		"sample_data": "allowed: 'Guide sample' category and articles created through the admin",
+		"outline_approved": "2026-10-15"
+	},
+	"doc": {
+		"url": "https://claude.ai/code/artifact/65551dff-87b8-448b-b93a-4d1b96257dfc",
+		"id": "65551dff-87b8-448b-b93a-4d1b96257dfc",
+		"tab": "465f0c2a-af39",
+		"body_node": "30c0b059-152a"
+	},
+	"output_local": "docs/admin-guides/articles/articles-admin-guide.md",
+	"sections": [
+		{
+			"id": "before-you-start",
+			"title": "Before you start",
+			"state_needed": null,
+			"setup": "claude",
+			"needs_user": [],
+			"shots": [],
+			"status": "written"
+		},
+		{
+			"id": "articles-list",
+			"title": "Open Articles and find your way around",
+			"state_needed": "empty list first, then sample articles",
+			"setup": "claude",
+			"needs_user": [],
+			"shots": [
+				"list-01-menu-empty",
+				"list-02-empty-state",
+				"list-03-overview"
+			],
+			"status": "written"
+		},
+		{
+			"id": "category",
+			"title": "Create a category",
+			"state_needed": "none; creates 'Guide sample' category",
+			"setup": "claude",
+			"needs_user": [],
+			"shots": [
+				"cat-01-new",
+				"cat-02-form",
+				"cat-03-saved"
+			],
+			"status": "written"
+		},
+		{
+			"id": "write-article",
+			"title": "Write and save an article",
+			"state_needed": "creates 'Guide sample: Welcome to our site'",
+			"setup": "claude",
+			"needs_user": [],
+			"shots": [
+				"art-01-new",
+				"art-02-title-text",
+				"art-03-settings",
+				"art-04-save-buttons",
+				"art-05-created"
+			],
+			"status": "written"
+		},
+		{
+			"id": "images",
+			"title": "Add images",
+			"state_needed": "sample article; uses an image already in Media",
+			"setup": "claude",
+			"needs_user": [],
+			"shots": [
+				"img-01-tab",
+				"img-02-select",
+				"img-03-fields",
+				"img-04-inline",
+				"img-05-saved"
+			],
+			"status": "written"
+		},
+		{
+			"id": "publish-schedule",
+			"title": "Publish, unpublish and schedule",
+			"state_needed": "sample articles",
+			"setup": "claude",
+			"needs_user": [],
+			"shots": [
+				"pub-01-toggle",
+				"pub-02-actions",
+				"pub-03-schedule",
+				"pub-04-scheduled"
+			],
+			"status": "written"
+		},
+		{
+			"id": "featured",
+			"title": "Feature an article on the home page",
+			"state_needed": "sample article featured",
+			"setup": "claude",
+			"needs_user": [],
+			"shots": [
+				"feat-01-toggle",
+				"feat-02-featured",
+				"feat-03-featured-list"
+			],
+			"status": "written"
+		},
+		{
+			"id": "find-edit",
+			"title": "Find, filter and edit articles",
+			"state_needed": "2-3 sample articles",
+			"setup": "claude",
+			"needs_user": [],
+			"shots": [
+				"find-01-search",
+				"find-02-filters",
+				"find-03-sort",
+				"find-04-locked",
+				"find-05-checkin",
+				"find-06-open"
+			],
+			"status": "written"
+		},
+		{
+			"id": "organize",
+			"title": "Move, copy, archive, trash and restore",
+			"state_needed": "sample articles",
+			"setup": "claude",
+			"needs_user": [],
+			"shots": [
+				"org-01-batch",
+				"org-02-menu",
+				"org-03-trashed",
+				"org-04-restored"
+			],
+			"status": "written"
+		},
+		{
+			"id": "versions-preview",
+			"title": "Versions and preview",
+			"state_needed": "sample article saved twice",
+			"setup": "claude",
+			"needs_user": [],
+			"shots": [
+				"ver-01-buttons",
+				"ver-02-history",
+				"ver-03-preview"
+			],
+			"status": "written"
+		},
+		{
+			"id": "seo",
+			"title": "Search engine basics: alias and meta description",
+			"state_needed": "sample article",
+			"setup": "claude",
+			"needs_user": [],
+			"shots": [
+				"seo-01-alias",
+				"seo-02-meta"
+			],
+			"status": "written"
+		},
+		{
+			"id": "troubleshooting",
+			"title": "Troubleshooting",
+			"state_needed": null,
+			"setup": "claude",
+			"needs_user": [],
+			"shots": [],
+			"status": "written"
+		}
+	],
+	"changes": [
+		{
+			"what": "created category",
+			"table": "#__categories",
+			"id": 8,
+			"title": "Guide sample",
+			"revert": "trash then delete in Content > Categories"
+		},
+		{
+			"what": "created article",
+			"table": "#__content",
+			"id": 1,
+			"title": "Guide sample: Welcome to our site",
+			"revert": "trash then delete in Content > Articles"
+		},
+		{
+			"what": "edited article 1: intro image images/headers/maple.jpg, full image images/headers/blue-flower.jpg (version 2)",
+			"table": "#__content",
+			"id": 1
+		},
+		{
+			"what": "created article",
+			"table": "#__content",
+			"id": 2,
+			"title": "Guide sample: Scheduled news",
+			"note": "published, start 2026-12-01 09:00, finish 2026-12-31 23:59",
+			"revert": "trash then delete"
+		},
+		{
+			"what": "featured article 1 (list toggle)",
+			"table": "#__content / #__content_frontpage",
+			"id": 1,
+			"revert": "click the star again"
+		},
+		{
+			"what": "created article",
+			"table": "#__content",
+			"id": 3,
+			"title": "Guide sample: Old notice",
+			"note": "trashed then restored (published)",
+			"revert": "trash then delete"
+		},
+		{
+			"what": "checked in all sample articles at the end (list Actions > Check-in)"
+		}
+	],
+	"assets": {},
+	"notes": [
+		"Preview counted 2 hits on article 1",
+		"Meta description in seo-02 was typed for the screenshot but not saved"
+	]
+}

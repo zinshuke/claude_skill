@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Joomla Articles Guide</title>
+<style>
+:root{--bg:#f6f7f9;--panel:#fff;--text:#1d2330;--muted:#5d6675;--line:#dfe3ea;--accent:#e5262f;
+--accent-soft:#fdecec;--code:#eef1f5;--shadow:0 1px 3px rgba(16,24,40,.08),0 4px 16px rgba(16,24,40,.06)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#11141a;--panel:#191d25;--text:#e6e9ef;
+--muted:#9aa3b2;--line:#2a303b;--accent-soft:#3a1d20;--code:#232833;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+:root[data-theme=dark]{--bg:#11141a;--panel:#191d25;--text:#e6e9ef;--muted:#9aa3b2;--line:#2a303b;
+--accent-soft:#3a1d20;--code:#232833;--shadow:0 1px 3px rgba(0,0,0,.4)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--accent)}
+.layout{display:grid;grid-template-columns:280px minmax(0,1fr);max-width:1320px;margin:0 auto;gap:32px;padding:24px 16px}
+nav.toc{position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto;background:var(--panel);
+border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:var(--shadow)}
+nav.toc .back{display:block;font-size:13px;color:var(--muted);text-decoration:none;margin-bottom:8px}
+nav.toc h2{font-size:15px;margin:0 0 10px}
+nav.toc input{width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);margin-bottom:10px}
+nav.toc ol{list-style:none;margin:0;padding:0;counter-reset:s}
+nav.toc li a{display:flex;gap:8px;padding:6px 8px;border-radius:8px;color:var(--text);text-decoration:none;font-size:14px;line-height:1.35}
+nav.toc li a::before{counter-increment:s;content:counter(s);color:var(--muted);min-width:18px;font-variant-numeric:tabular-nums}
+nav.toc li a:hover{background:var(--bg)}
+nav.toc li a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+main{min-width:0}
+header.hero{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:28px 32px;margin-bottom:24px;box-shadow:var(--shadow)}
+header.hero h1{margin:0 0 6px;font-size:30px;line-height:1.2}
+header.hero .meta{color:var(--muted);font-size:14px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
+.toolbar{display:flex;gap:8px;margin-left:auto}
+.toolbar button{border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:13px}
+section.guide{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:28px 32px;margin-bottom:24px;box-shadow:var(--shadow)}
+section.guide h2{margin:0 0 12px;font-size:24px;line-height:1.25}
+section.guide>ol{counter-reset:step;list-style:none;padding:0;margin:20px 0}
+section.guide>ol>li{counter-increment:step;position:relative;padding:0 0 18px 48px;margin-bottom:6px;border-left:2px solid var(--line);margin-left:15px}
+section.guide>ol>li:last-child{border-left-color:transparent}
+section.guide>ol>li::before{content:counter(step);position:absolute;left:-16px;top:-2px;width:30px;height:30px;border-radius:50%;
+background:var(--accent);color:#fff;font-weight:700;font-size:15px;display:grid;place-items:center;border:2px solid var(--panel);box-shadow:0 1px 4px rgba(0,0,0,.25)}
+section.guide>ol>li>p:first-child{margin-top:0}
+figure{margin:14px 0 6px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px}
+figure img{display:block;width:100%;height:auto;border-radius:6px;cursor:zoom-in}
+figcaption{font-size:13px;color:var(--muted);padding:6px 4px 0}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14.5px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--bg)}
+code{background:var(--code);padding:1px 6px;border-radius:5px;font-size:.9em}
+strong{font-weight:650}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:24px;z-index:10;cursor:zoom-out}
+.lightbox.open{display:flex}
+.lightbox img{max-width:min(1440px,100%);height:auto;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.hidden{display:none!important}
+footer{color:var(--muted);font-size:13px;text-align:center;padding:8px 0 32px}
+@media (max-width:900px){.layout{grid-template-columns:1fr;gap:16px}nav.toc{position:static;max-height:none}
+header.hero,section.guide{padding:20px 16px}section.guide>ol>li{padding-left:36px}}
+@media print{nav.toc,.toolbar,.lightbox{display:none!important}.layout{display:block;padding:0}body{background:#fff}
+header.hero,section.guide{box-shadow:none;border:0;padding:0 0 12px}figure{break-inside:avoid}section.guide{break-before:page}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+<a class="back" href="../index.html">&larr; All guides</a>
+<h2>Contents</h2>
+<input id="filter" type="search" placeholder="Search this guide" aria-label="Search this guide">
+<ol><li><a href="#before-you-start">Before you start</a></li><li><a href="#open-articles-and-find-your-way-around">Open Articles and find your way around</a></li><li><a href="#create-a-category">Create a category</a></li><li><a href="#write-and-save-an-article">Write and save an article</a></li><li><a href="#add-images">Add images</a></li><li><a href="#publish-unpublish-and-schedule">Publish, unpublish and schedule</a></li><li><a href="#feature-an-article-on-the-home-page">Feature an article on the home page</a></li><li><a href="#find-filter-and-edit-articles">Find, filter and edit articles</a></li><li><a href="#move-copy-archive-trash-and-restore">Move, copy, archive, trash and restore</a></li><li><a href="#versions-and-preview">Versions and preview</a></li><li><a href="#search-engine-basics-alias-and-meta-description">Search engine basics: alias and meta description</a></li><li><a href="#troubleshooting">Troubleshooting</a></li></ol>
+</nav>
+<main>
+<header class="hero">
+<h1>Joomla Articles Guide</h1>
+<div class="meta"><span>Updated 2026-10-15</span><span>12 sections</span><span>38 screenshots</span><span>For content staff / editors</span><span><a href="https://claude.ai/code/artifact/65551dff-87b8-448b-b93a-4d1b96257dfc">Online version</a></span>
+<div class="toolbar"><button id="theme" type="button">Light / dark</button><button id="print" type="button">Print / PDF</button></div></div>
+
+</header>
+<section class="guide" id="before-you-start"><h2>Before you start</h2>
+<p>Articles are the pages of text and pictures that make up most of a Joomla site. You manage them in the administrator under <strong>Content → Articles</strong>. Every article belongs to one <strong>category</strong>, which works like a folder.</p>
+<p><strong>What you can do depends on your user group:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Can</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Author</td>
+<td>Write new articles and edit their own</td>
+</tr>
+<tr>
+<td>Editor</td>
+<td>Everything an Author can, plus edit anyone's articles</td>
+</tr>
+<tr>
+<td>Publisher</td>
+<td>Everything an Editor can, plus publish, unpublish and feature articles</td>
+</tr>
+<tr>
+<td>Manager, Administrator, Super Users</td>
+<td>Everything, including trash, delete and article settings</td>
+</tr>
+</tbody>
+</table>
+<p>If a button in this guide is missing for you, your group does not allow that action; ask your site administrator.</p>
+<p>The screenshots come from a test site at <code>http://localhost:3000</code> and use sample articles named <strong>Guide sample</strong>. On your site you will see your own address and articles.</p>
+</section><section class="guide" id="open-articles-and-find-your-way-around"><h2>Open Articles and find your way around</h2>
+<ol>
+<li>
+<p>In the left menu, click <strong>Content → Articles</strong>. The <strong>+</strong> next to it opens a new article straight away.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 1: Content and Articles in the left menu" src="img/list-01-menu-empty.png" /><figcaption>Step 1: Content and Articles in the left menu</figcaption></figure>
+</li>
+<li>
+<p>On a new site the screen says <strong>No Articles have been created yet.</strong> Click <strong>Add your first article</strong> to start, or <strong>Learn More</strong> for Joomla's own help.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 2: the empty Articles screen" src="img/list-02-empty-state.png" /><figcaption>Step 2: the empty Articles screen</figcaption></figure>
+</li>
+<li>
+<p>Once you have articles, the screen shows a list:</p>
+<ul>
+<li><strong>New</strong> (3a) starts a new article.</li>
+<li><strong>Actions</strong> (3b) works on the articles you tick: publish, unpublish, feature, archive, trash and more.</li>
+<li>The search bar (3c) finds, filters and sorts articles.</li>
+<li>The list (3d) shows each article with its <strong>Featured</strong> and <strong>Status</strong> icons, title, alias, category, access, author, date, views (<strong>Hits</strong>) and <strong>ID</strong>. Click a title to edit the article.</li>
+</ul>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 3: the Articles list with toolbar, search bar and columns" src="img/list-03-overview.png" /><figcaption>Step 3: the Articles list with toolbar, search bar and columns</figcaption></figure>
+</li>
+</ol>
+<p><strong>Options</strong> (top right) holds site-wide article settings and is for administrators. <strong>Help</strong> opens Joomla's help for this screen.</p>
+</section><section class="guide" id="create-a-category"><h2>Create a category</h2>
+<p>Categories group related articles, such as News, Events or Help. Create the category before you write articles for it. Every site already has one called <strong>Uncategorised</strong>.</p>
+<ol>
+<li>
+<p>In the left menu, click <strong>Content → Categories</strong> (1a), then click <strong>New</strong> (1b).</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 1: the Categories menu item and the New button" src="img/cat-01-new.png" /><figcaption>Step 1: the Categories menu item and the New button</figcaption></figure>
+</li>
+<li>
+<p>Type a name in <strong>Title</strong> (2a), for example <code>News</code>. Leave <strong>Alias</strong> empty; Joomla fills it in from the title. Click <strong>Save &amp; Close</strong> (2b).</p>
+<figure><img loading="lazy" width="1440" height="1067" alt="Step 2: enter the category title and click Save &amp; Close" src="img/cat-02-form.png" /><figcaption>Step 2: enter the category title and click Save &amp; Close</figcaption></figure>
+</li>
+<li>
+<p>Joomla shows <strong>Category saved.</strong> (3a) and the new category appears in the list with a green tick, which means it is published (3b).</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 3: the saved message and the new category in the list" src="img/cat-03-saved.png" /><figcaption>Step 3: the saved message and the new category in the list</figcaption></figure>
+</li>
+</ol>
+<p>A category can also have a description, a parent category (to make sub-categories) and its own permissions. Articles in an unpublished category do not show on the site, even if the articles themselves are published.</p>
+</section><section class="guide" id="write-and-save-an-article"><h2>Write and save an article</h2>
+<ol>
+<li>
+<p>Go to <strong>Content → Articles</strong> and click <strong>New</strong>. On an empty site you can also click <strong>Add your first article</strong>.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 1: the New button on the Articles screen" src="img/art-01-new.png" /><figcaption>Step 1: the New button on the Articles screen</figcaption></figure>
+</li>
+<li>
+<p>Type the headline in <strong>Title</strong> (2a). Write the text in <strong>Article Text</strong> (2b). The editor works like a word processor: use the toolbar for bold, italic, lists and alignment, and the <strong>Paragraph</strong> list for headings. Leave <strong>Alias</strong> empty; Joomla makes it from the title and uses it in the page address.</p>
+<figure><img loading="lazy" width="1440" height="1043" alt="Step 2: the Title field and the text editor" src="img/art-02-title-text.png" /><figcaption>Step 2: the Title field and the text editor</figcaption></figure>
+</li>
+<li>
+<p>Check the settings on the right:</p>
+<ul>
+<li><strong>Status</strong> (3a): <strong>Published</strong> shows the article on the site; <strong>Unpublished</strong> keeps it as a draft.</li>
+<li><strong>Category</strong> (3b): choose where the article belongs. This field is required.</li>
+<li><strong>Featured</strong> (3c): <strong>Yes</strong> also shows it in featured lists, often the home page.</li>
+<li><strong>Access</strong> (3d): <strong>Public</strong> is everyone; <strong>Registered</strong> means logged-in visitors only.</li>
+<li><strong>Tags</strong> (3e): optional keywords that link related articles.</li>
+</ul>
+<figure><img loading="lazy" width="1440" height="1043" alt="Step 3: Status, Category, Featured, Access and Tags" src="img/art-03-settings.png" /><figcaption>Step 3: Status, Category, Featured, Access and Tags</figcaption></figure>
+</li>
+<li>
+<p>Choose how to save:</p>
+<ul>
+<li><strong>Save</strong> (4a) saves and keeps the article open.</li>
+<li><strong>Save &amp; Close</strong> (4b) saves and returns to the list.</li>
+<li>The arrow next to it (4c) has <strong>Save &amp; New</strong>, to start another article right away, and <strong>Save to Menu</strong>, to add the article to a site menu. After the first save it also offers <strong>Save as Copy</strong>.</li>
+<li><strong>Cancel</strong> (4d) leaves without saving.</li>
+</ul>
+<figure><img loading="lazy" width="1440" height="1043" alt="Step 4: the Save, Save &amp; Close, extra save options and Cancel buttons" src="img/art-04-save-buttons.png" /><figcaption>Step 4: the Save, Save &amp; Close, extra save options and Cancel buttons</figcaption></figure>
+</li>
+<li>
+<p>After <strong>Save</strong>, Joomla shows <strong>Article saved.</strong> The alias is now filled in, and new buttons appear at the top: <strong>Close</strong>, <strong>Versions</strong>, <strong>Preview</strong> and <strong>Accessibility Check</strong>.</p>
+<figure><img loading="lazy" width="1440" height="1107" alt="Step 5: the Article saved message and the extra toolbar buttons" src="img/art-05-created.png" /><figcaption>Step 5: the Article saved message and the extra toolbar buttons</figcaption></figure>
+</li>
+</ol>
+<p>Always leave an article with <strong>Save &amp; Close</strong>, <strong>Close</strong> or <strong>Cancel</strong>. If you close the browser tab instead, the article stays locked for others; see <strong>Find, filter and edit articles</strong>.</p>
+</section><section class="guide" id="add-images"><h2>Add images</h2>
+<p>An article can have two main pictures: the <strong>Intro Image</strong>, shown in article lists and on the home page, and the <strong>Full Article Image</strong>, shown at the top of the article page. You can also place pictures anywhere inside the text.</p>
+<ol>
+<li>
+<p>Open the article and click the <strong>Images and Links</strong> tab.</p>
+<figure><img loading="lazy" width="1440" height="1477" alt="Step 1: the Images and Links tab" src="img/img-01-tab.png" /><figcaption>Step 1: the Images and Links tab</figcaption></figure>
+</li>
+<li>
+<p>Under <strong>Intro Image</strong>, click <strong>Select</strong>. In the <strong>Change Image</strong> window, open a folder, click a picture, then click <strong>Select</strong> at the top right. To use a picture from your computer, click <strong>Upload</strong> first.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 2: the Change Image window" src="img/img-02-select.png" /><figcaption>Step 2: the Change Image window</figcaption></figure>
+</li>
+<li>
+<p>The picture now shows in <strong>Intro Image</strong> (3a). Describe it in <strong>Image Description (Alt Text)</strong> (3b); this text is read aloud to blind visitors and helps search engines. Do the same for the <strong>Full Article Image</strong> (3c, 3d). Click <strong>Save</strong> or <strong>Save &amp; Close</strong>.</p>
+<figure><img loading="lazy" width="1440" height="1477" alt="Step 3: the chosen intro and full article images with their descriptions" src="img/img-03-fields.png" /><figcaption>Step 3: the chosen intro and full article images with their descriptions</figcaption></figure>
+</li>
+<li>
+<p>To put a picture inside the text, go back to the <strong>Content</strong> tab, click where the picture should go, then open <strong>CMS Content</strong> in the editor toolbar and choose <strong>Media</strong>. The same menu has <strong>Read More</strong>, which splits the article into a short intro for lists and the full text.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 4: the CMS Content menu with Media and Read More" src="img/img-04-inline.png" /><figcaption>Step 4: the CMS Content menu with Media and Read More</figcaption></figure>
+</li>
+<li>
+<p>After <strong>Save &amp; Close</strong>, Joomla shows <strong>Article saved.</strong> (5a) and you return to the list (5b).</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 5: the saved message and the article in the list" src="img/img-05-saved.png" /><figcaption>Step 5: the saved message and the article in the list</figcaption></figure>
+</li>
+</ol>
+<p>Use photos that are no wider than about 1920 pixels and under 500 KB, so pages load quickly. The <strong>X</strong> next to <strong>Select</strong> removes a picture.</p>
+</section><section class="guide" id="publish-unpublish-and-schedule"><h2>Publish, unpublish and schedule</h2>
+<p>Only <strong>Published</strong> articles show on the site. You can change the status in the article (the <strong>Status</strong> field on the <strong>Content</strong> tab) or straight from the list.</p>
+<ol>
+<li>
+<p>In the Articles list, click the icon in the <strong>Status</strong> column to switch an article between published (green tick) and unpublished (grey cross). Point at the icon to see what it will do.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 1: the Status icon and its tooltip" src="img/pub-01-toggle.png" /><figcaption>Step 1: the Status icon and its tooltip</figcaption></figure>
+</li>
+<li>
+<p>To change several articles at once, tick their boxes (2a), open <strong>Actions</strong> and choose <strong>Publish</strong> (2b) or <strong>Unpublish</strong> (2c).</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 2: Publish and Unpublish in the Actions menu" src="img/pub-02-actions.png" /><figcaption>Step 2: Publish and Unpublish in the Actions menu</figcaption></figure>
+</li>
+<li>
+<p>To schedule an article, open it, go to the <strong>Publishing</strong> tab and set <strong>Start Publishing</strong> (3a). Optionally set <strong>Finish Publishing</strong> (3b) to hide it again automatically, for example when an offer ends. Click the calendar button to pick a date, then save. Keep <strong>Status</strong> on <strong>Published</strong>.</p>
+<figure><img loading="lazy" width="1440" height="1078" alt="Step 3: Start Publishing and Finish Publishing dates" src="img/pub-03-schedule.png" /><figcaption>Step 3: Start Publishing and Finish Publishing dates</figcaption></figure>
+</li>
+<li>
+<p>In the list, a scheduled article shows a warning triangle. Point at it to see <strong>Published, but is Pending</strong> with its start and finish dates. It appears on the site by itself at the start date.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 4: the pending icon with the scheduled dates" src="img/pub-04-scheduled.png" /><figcaption>Step 4: the pending icon with the scheduled dates</figcaption></figure>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Status icon</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Green tick</td>
+<td>Published and visible now</td>
+</tr>
+<tr>
+<td>Grey cross</td>
+<td>Unpublished (draft)</td>
+</tr>
+<tr>
+<td>Warning triangle</td>
+<td>Published, but waiting for its start date, or its finish date has passed</td>
+</tr>
+<tr>
+<td>Box</td>
+<td>Archived</td>
+</tr>
+<tr>
+<td>Bin</td>
+<td>Trashed</td>
+</tr>
+</tbody>
+</table>
+</section><section class="guide" id="feature-an-article-on-the-home-page"><h2>Feature an article on the home page</h2>
+<p>Featured articles appear in featured lists. On most Joomla sites, the home page is such a list, so featuring an article puts it on the home page.</p>
+<ol>
+<li>
+<p>In the Articles list, find the grey circle in the <strong>Featured</strong> column. Point at it: it says <strong>Unfeatured</strong> and <strong>Toggle featured status</strong>.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 1: the Featured toggle of an unfeatured article" src="img/feat-01-toggle.png" /><figcaption>Step 1: the Featured toggle of an unfeatured article</figcaption></figure>
+</li>
+<li>
+<p>Click the circle. Joomla shows <strong>Article featured.</strong> (2a) and the circle becomes a yellow star (2b). Click the star again to unfeature the article. You can also use <strong>Actions → Feature</strong> for several articles, or set <strong>Featured</strong> to <strong>Yes</strong> inside the article.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 2: the Article featured message and the yellow star" src="img/feat-02-featured.png" /><figcaption>Step 2: the Article featured message and the yellow star</figcaption></figure>
+</li>
+<li>
+<p>To see only featured articles, open <strong>Filter Options</strong> and choose <strong>Featured Articles</strong> in the first filter (3a). The list then shows just the featured ones (3b). Click <strong>Clear</strong> to see all articles again.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 3: the Featured Articles filter and the featured article" src="img/feat-03-featured-list.png" /><figcaption>Step 3: the Featured Articles filter and the featured article</figcaption></figure>
+</li>
+</ol>
+<p>A featured article also needs <strong>Status: Published</strong> to show on the home page.</p>
+</section><section class="guide" id="find-filter-and-edit-articles"><h2>Find, filter and edit articles</h2>
+<ol>
+<li>
+<p>Type part of a title in <strong>Search</strong> and press Enter or click the magnifier (1a). The list shows only matching articles (1b). Tips: <code>id:12</code> finds article number 12, <code>author:Anna</code> finds articles by an author, <code>content:holiday</code> searches the text.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 1: searching for an article" src="img/find-01-search.png" /><figcaption>Step 1: searching for an article</figcaption></figure>
+</li>
+<li>
+<p>Click <strong>Filter Options</strong> (2a) to narrow the list by featured, status, category, access, author, checked out, tag or level (2b). Click <strong>Clear</strong> (2c) to remove the search and all filters.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 2: Filter Options and Clear" src="img/find-02-filters.png" /><figcaption>Step 2: Filter Options and Clear</figcaption></figure>
+</li>
+<li>
+<p>Change the order with the sort list (3a), or click a column heading such as <strong>Title</strong> (3b); click it again to reverse the order. The number list (3c) sets how many articles show per page.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 3: the sort list, a sortable column heading and the per-page list" src="img/find-03-sort.png" /><figcaption>Step 3: the sort list, a sortable column heading and the per-page list</figcaption></figure>
+</li>
+<li>
+<p>A padlock next to a title means someone has the article open, or closed the browser without saving. Point at the padlock to see who and since when. Others cannot edit the article until it is checked in.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 4: a locked article and its tooltip" src="img/find-04-locked.png" /><figcaption>Step 4: a locked article and its tooltip</figcaption></figure>
+</li>
+<li>
+<p>If you are sure nobody is still working on it, tick the article (5a), open <strong>Actions</strong> (5b) and choose <strong>Check-in</strong> (5c). You can also click the padlock itself if it is your own lock.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 5: Check-in in the Actions menu" src="img/find-05-checkin.png" /><figcaption>Step 5: Check-in in the Actions menu</figcaption></figure>
+</li>
+<li>
+<p>To edit, click the article's title. Make your changes and click <strong>Save &amp; Close</strong>.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 6: click a title to open the article" src="img/find-06-open.png" /><figcaption>Step 6: click a title to open the article</figcaption></figure>
+</li>
+</ol>
+<p>The list remembers your search, filters and sort order until you click <strong>Clear</strong>. If an article seems to be missing, check that no filter is still active.</p>
+</section><section class="guide" id="move-copy-archive-trash-and-restore"><h2>Move, copy, archive, trash and restore</h2>
+<ol>
+<li>
+<p>To move or copy articles to another category, tick them, open <strong>Actions</strong> and choose <strong>Batch</strong>. In <strong>Copy or Move to Category</strong>, pick the category and choose <strong>Move</strong> or <strong>Copy</strong>, then click <strong>Process</strong>. The same window changes the access level or adds and removes tags for all ticked articles at once.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 1: the Batch window" src="img/org-01-batch.png" /><figcaption>Step 1: the Batch window</figcaption></figure>
+</li>
+<li>
+<p>Tick an article (2a) and open <strong>Actions</strong>. <strong>Archive</strong> (2b) keeps an old article on the site's archive pages but out of normal lists. <strong>Trash</strong> (2c) removes it from the site but keeps it in the trash, so you can still bring it back.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 2: Archive and Trash in the Actions menu" src="img/org-02-menu.png" /><figcaption>Step 2: Archive and Trash in the Actions menu</figcaption></figure>
+</li>
+<li>
+<p>To see the trash, open <strong>Filter Options</strong> and choose <strong>Trashed</strong> in the status filter (3a). Trashed articles show a bin icon (3b). Only here does the <strong>Delete</strong> button (3c) appear: it removes the ticked articles for good and cannot be undone.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 3: the Trashed filter, a trashed article and the Delete button" src="img/org-03-trashed.png" /><figcaption>Step 3: the Trashed filter, a trashed article and the Delete button</figcaption></figure>
+</li>
+<li>
+<p>To restore an article from the trash, tick it and choose <strong>Actions → Publish</strong> (or <strong>Unpublish</strong> to restore it as a draft). Joomla shows <strong>Article published.</strong> Click <strong>Clear</strong> to return to the normal list.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 4: the message after restoring an article" src="img/org-04-restored.png" /><figcaption>Step 4: the message after restoring an article</figcaption></figure>
+</li>
+</ol>
+<p>Prefer <strong>Unpublish</strong> or <strong>Archive</strong> over <strong>Delete</strong>: they keep the article and its history in case you need it later.</p>
+</section><section class="guide" id="versions-and-preview"><h2>Versions and preview</h2>
+<p>Joomla keeps the last 10 saved versions of each article, so you can see what changed and go back. Both buttons appear once an article has been saved.</p>
+<ol>
+<li>
+<p>Open the article. Click <strong>Versions</strong> (1a) to see its history, or <strong>Preview</strong> (1b) to see how it will look on the site.</p>
+<figure><img loading="lazy" width="1440" height="1043" alt="Step 1: the Versions and Preview buttons" src="img/ver-01-buttons.png" /><figcaption>Step 1: the Versions and Preview buttons</figcaption></figure>
+</li>
+<li>
+<p>The <strong>Versions</strong> window lists every saved version with its date, <strong>Version Note</strong>, author and size. A star marks the current version. Tick a version and click <strong>Preview</strong> to view it, tick two and click <strong>Compare</strong> to see the differences, or click <strong>Restore</strong> to load an older version back into the form (then save). <strong>Keep On/Off</strong> protects a version from being removed when the limit of 10 is reached.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 2: the Versions window" src="img/ver-02-history.png" /><figcaption>Step 2: the Versions window</figcaption></figure>
+</li>
+<li>
+<p><strong>Preview</strong> shows the article in the site's design, including images, before your visitors see it. Close the window with the <strong>X</strong>.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 3: the Preview window" src="img/ver-03-preview.png" /><figcaption>Step 3: the Preview window</figcaption></figure>
+</li>
+</ol>
+<p>Type a short <strong>Version Note</strong> on the <strong>Content</strong> tab before saving, such as "Added images". It makes the right version easy to find later.</p>
+</section><section class="guide" id="search-engine-basics-alias-and-meta-description"><h2>Search engine basics: alias and meta description</h2>
+<p>Two fields help your articles look good in Google and other search engines.</p>
+<ol>
+<li>
+<p><strong>Alias</strong> is the part of the page address that comes from the title, such as <code>guide-sample-welcome-to-our-site</code>. Joomla fills it in on the first save. Keep it short and avoid changing it after the article is published, because old links and search results would stop working.</p>
+<figure><img loading="lazy" width="1440" height="1043" alt="Step 1: the Alias field" src="img/seo-01-alias.png" /><figcaption>Step 1: the Alias field</figcaption></figure>
+</li>
+<li>
+<p>On the <strong>Publishing</strong> tab, write a <strong>Meta Description</strong> (2a): one or two sentences that say what the article is about. Search engines often show it under the title in their results. Stay under about 160 characters; the counter shows how many are left. Leave <strong>Robots</strong> (2b) on <strong>Use Global</strong> unless you want to keep an article out of search engines.</p>
+<figure><img loading="lazy" width="1440" height="1194" alt="Step 2: Meta Description and Robots on the Publishing tab" src="img/seo-02-meta.png" /><figcaption>Step 2: Meta Description and Robots on the Publishing tab</figcaption></figure>
+</li>
+</ol>
+<p>When an article is featured, the <strong>Publishing</strong> tab also shows <strong>Start Featured</strong> and <strong>Finish Featured</strong>, to feature it for a limited time.</p>
+</section><section class="guide" id="troubleshooting"><h2>Troubleshooting</h2>
+<p>An article that does not show on the site is almost always one of the first five rows below.</p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Check</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Article not on the site</td>
+<td><strong>Status</strong> icon in the list</td>
+<td>Publish it (green tick)</td>
+</tr>
+<tr>
+<td>Article not on the site</td>
+<td>Warning triangle in <strong>Status</strong></td>
+<td>It is scheduled or expired: change <strong>Start Publishing</strong> / <strong>Finish Publishing</strong> on the <strong>Publishing</strong> tab</td>
+</tr>
+<tr>
+<td>Article not on the site</td>
+<td>Its category</td>
+<td>The category must be published too (<strong>Content → Categories</strong>)</td>
+</tr>
+<tr>
+<td>Visitors cannot see it, you can</td>
+<td><strong>Access</strong> field</td>
+<td>Set to <strong>Public</strong>; <strong>Registered</strong> shows it only to logged-in visitors</td>
+</tr>
+<tr>
+<td>Article not on the home page</td>
+<td><strong>Featured</strong> column</td>
+<td>Click the circle to make it a yellow star; it must also be published</td>
+</tr>
+<tr>
+<td>Padlock next to the title; "checked out" message</td>
+<td>Point at the padlock</td>
+<td>Ask that person to close it, or use <strong>Actions → Check-in</strong></td>
+</tr>
+<tr>
+<td>"Save failed" about the alias</td>
+<td>Another article in the same category has the same alias</td>
+<td>Change <strong>Alias</strong> to something unique</td>
+</tr>
+<tr>
+<td>Changes not visible on the site</td>
+<td>Your browser or the site cache</td>
+<td>Reload the page; ask an administrator to clear the cache</td>
+</tr>
+<tr>
+<td>Article seems to have disappeared from the list</td>
+<td>Search bar and filters</td>
+<td>Click <strong>Clear</strong>; check the <strong>Trashed</strong> and <strong>Archived</strong> status filters</td>
+</tr>
+<tr>
+<td>Saved a wrong change</td>
+<td><strong>Versions</strong></td>
+<td>Restore the previous version and save</td>
+</tr>
+<tr>
+<td>A button in this guide is missing</td>
+<td>Your user group</td>
+<td>Ask an administrator for the right permission</td>
+</tr>
+</tbody>
+</table></section>
+<footer>Generated from articles-admin-guide.md by the admin-guide-screenshots skill.</footer>
+</main>
+</div>
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Screenshot"><img alt=""></div>
+<script>
+(function(){
+const root=document.documentElement;
+try{const t=localStorage.getItem('guide-theme');if(t)root.dataset.theme=t;}catch(e){}
+document.getElementById('theme').onclick=()=>{const d=root.dataset.theme==='dark'||(!root.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);
+root.dataset.theme=d?'light':'dark';try{localStorage.setItem('guide-theme',root.dataset.theme)}catch(e){}};
+document.getElementById('print').onclick=()=>window.print();
+const links=[...document.querySelectorAll('nav.toc li a')];
+const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+e.target.id));}})},{rootMargin:'0px 0px -70% 0px'});
+secs.forEach(s=>s&&io.observe(s));
+const q=document.getElementById('filter');
+q.oninput=()=>{const v=q.value.trim().toLowerCase();secs.forEach((s,i)=>{const hit=!v||s.textContent.toLowerCase().includes(v);
+s.classList.toggle('hidden',!hit);links[i].parentElement.classList.toggle('hidden',!hit);});};
+const lb=document.getElementById('lightbox'),lbi=lb.querySelector('img');
+document.querySelectorAll('figure img').forEach(i=>i.onclick=()=>{lbi.src=i.src;lbi.alt=i.alt;lb.classList.add('open')});
+lb.onclick=()=>lb.classList.remove('open');
+document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('open')});
+})();
+</script>
+</body>
+</html>

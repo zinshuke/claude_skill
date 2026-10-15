@@ -1,0 +1,490 @@
+{
+	"base_url": "http://localhost:3000",
+	"viewport": {
+		"width": 1440,
+		"height": 900
+	},
+	"hide": [
+		".phpdebugbar",
+		"#system-debug"
+	],
+	"blur": [],
+	"shots": [
+		{
+			"name": "byo-01-redirect-uri",
+			"url": "/administrator/index.php?option=com_sitekit&view=settings",
+			"highlights": [
+				{
+					"selector": ".mb-3:has(#redirect_uri)",
+					"label": "1"
+				}
+			]
+		},
+		{
+			"name": "byo-02-credentials",
+			"url": "/administrator/index.php?option=com_sitekit&view=settings",
+			"actions": [
+				{
+					"fill": [
+						"#client_id",
+						"123456789012-abc123def456.apps.googleusercontent.com"
+					]
+				},
+				{
+					"fill": [
+						"#client_secret",
+						"GOCSPX-example-secret"
+					]
+				}
+			],
+			"highlights": [
+				{
+					"selector": ".mb-3:has(#client_id)",
+					"label": "2a"
+				},
+				{
+					"selector": ".mb-3:has(#client_secret)",
+					"label": "2b"
+				},
+				{
+					"selector": "#adminForm button[type=submit]",
+					"label": "2c"
+				}
+			]
+		},
+		{
+			"name": "dash-01-menu",
+			"url": "/administrator/index.php?option=com_sitekit&view=dashboard",
+			"highlights": [
+				{
+					"selector": "#sidebarmenu a[href*=\"com_sitekit&view=dashboard\"]",
+					"label": "1",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "dash-02-setup",
+			"url": "/administrator/index.php?option=com_sitekit&view=dashboard",
+			"highlights": [
+				{
+					"selector": ".card:has(.com-sitekit-steps)",
+					"label": "2"
+				}
+			]
+		},
+		{
+			"name": "dash-03-status",
+			"url": "/administrator/index.php?option=com_sitekit&view=dashboard",
+			"highlights": [
+				{
+					"selector": ".col-md-4 .card",
+					"label": "3"
+				}
+			]
+		},
+		{
+			"name": "dash-04-features",
+			"url": "/administrator/index.php?option=com_sitekit&view=dashboard",
+			"highlights": [
+				{
+					"selector": ".com-sitekit-dashboard > .card:last-child",
+					"label": "4"
+				}
+			]
+		},
+		{
+			"name": "trial-01-start",
+			"url": "/administrator/index.php?option=com_sitekit&view=settings",
+			"highlights": [
+				{
+					"selector": "a[href*=\"task=oauth.trialStart\"]",
+					"label": "1"
+				}
+			]
+		},
+		{
+			"name": "services-00-not-connected",
+			"url": "/administrator/index.php?option=com_sitekit&view=services",
+			"highlights": [
+				{
+					"selector": ".com-sitekit-services > .alert",
+					"label": ""
+				}
+			]
+		},
+		{
+			"name": "reports-00-not-connected",
+			"url": "/administrator/index.php?option=com_sitekit&view=reports",
+			"highlights": [
+				{
+					"selector": ".com-sitekit-reports > .alert",
+					"label": ""
+				}
+			]
+		},
+		{
+			"name": "byo-05-connected",
+			"url": "/administrator/index.php?option=com_sitekit&view=settings",
+			"blur": [
+				"#client_id"
+			],
+			"highlights": [
+				{
+					"selector": ".col-lg-4 > .card:first-child",
+					"label": "5"
+				}
+			]
+		},
+		{
+			"name": "sc-01-card",
+			"url": "/administrator/index.php?option=com_sitekit&view=services",
+			"highlights": [
+				{
+					"selector": ".card:has(input[name=feature][value=searchconsole])",
+					"label": "1"
+				}
+			]
+		},
+		{
+			"name": "sc-02-property",
+			"url": "/administrator/index.php?option=com_sitekit&view=services",
+			"actions": [
+				{
+					"select": [
+						"select[name=site_url]",
+						"https://thepixel.dev/"
+					]
+				}
+			],
+			"highlights": [
+				{
+					"selector": "form:has(input[value=searchconsole]) select[name=site_url]",
+					"label": "2a",
+					"padding": 4
+				},
+				{
+					"selector": "form:has(input[value=searchconsole]) button[type=submit]",
+					"label": "2b",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "ga-01-authorize",
+			"url": "/administrator/index.php?option=com_sitekit&view=services",
+			"highlights": [
+				{
+					"selector": "a[href*=\"task=oauth.authorize\"][href*=\"feature=analytics\"]",
+					"label": "1",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "gtm-01-container",
+			"url": "/administrator/index.php?option=com_sitekit&view=services",
+			"actions": [
+				{
+					"fill": [
+						"input[name=container_id]",
+						"GTM-ABC1234"
+					]
+				}
+			],
+			"highlights": [
+				{
+					"selector": "form:has(input[value=tagmanager]) input[name=container_id]",
+					"label": "1a",
+					"padding": 4
+				},
+				{
+					"selector": "form:has(input[value=tagmanager]) button[type=submit]",
+					"label": "1b",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "ver-01-authorize",
+			"url": "/administrator/index.php?option=com_sitekit&view=services",
+			"highlights": [
+				{
+					"selector": "a[href*=\"task=oauth.authorize\"][href*=\"feature=verification\"]",
+					"label": "1",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "rep-01-picker",
+			"url": "/administrator/index.php?option=com_sitekit&view=reports",
+			"actions": [
+				{
+					"select": [
+						"#sitekit-report-picker",
+						"searchconsole"
+					]
+				},
+				{
+					"wait_ms": 300
+				}
+			],
+			"highlights": [
+				{
+					"selector": "#sitekit-report-picker",
+					"label": "1",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "rep-02-filters",
+			"url": "/administrator/index.php?option=com_sitekit&view=reports",
+			"actions": [
+				{
+					"select": [
+						"#sitekit-report-picker",
+						"searchconsole"
+					]
+				},
+				{
+					"wait_ms": 300
+				}
+			],
+			"highlights": [
+				{
+					"selector": "#sitekit-report-range",
+					"label": "2a",
+					"padding": 4
+				},
+				{
+					"selector": "#sitekit-report-url",
+					"label": "2b",
+					"padding": 4
+				},
+				{
+					"selector": "[data-sitekit-load-report]",
+					"label": "2c",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "plg-01-plugins",
+			"url": "/administrator/index.php?option=com_plugins&view=plugins&filter[search]=sitekit",
+			"highlights": [
+				{
+					"selector": "#filter_search",
+					"label": "1a",
+					"padding": 4
+				},
+				{
+					"selector": "#pluginList",
+					"label": "1b"
+				}
+			]
+		},
+		{
+			"name": "perm-01-options",
+			"url": "/administrator/index.php?option=com_sitekit&view=dashboard",
+			"highlights": [
+				{
+					"selector": "#toolbar-options",
+					"label": "1",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "perm-02-permissions",
+			"url": "/administrator/index.php?option=com_config&view=component&component=com_sitekit",
+			"highlights": [
+				{
+					"selector": "joomla-field-permissions",
+					"label": "2a"
+				},
+				{
+					"selector": "#toolbar-save",
+					"label": "2b",
+					"padding": 4,
+					"badge": "top"
+				}
+			]
+		},
+		{
+			"name": "dash-05-search-traffic",
+			"url": "/administrator/index.php?option=com_sitekit&view=dashboard",
+			"settle_ms": 2500,
+			"actions": [
+				{
+					"wait": "[data-sitekit-dashboard-sc] canvas"
+				}
+			],
+			"highlights": [
+				{
+					"selector": "[data-sitekit-dashboard-sc]",
+					"label": "5"
+				}
+			]
+		},
+		{
+			"name": "sc-03-connected",
+			"url": "/administrator/index.php?option=com_sitekit&view=services",
+			"highlights": [
+				{
+					"selector": ".card:has(input[name=feature][value=searchconsole])",
+					"label": "3"
+				}
+			]
+		},
+		{
+			"name": "ga-03-property",
+			"url": "/administrator/index.php?option=com_sitekit&view=services",
+			"highlights": [
+				{
+					"selector": "form:has(input[value=analytics]) select[name=property_id]",
+					"label": "3a",
+					"padding": 4,
+					"badge": "right"
+				},
+				{
+					"selector": "form:has(input[value=analytics]) input[name=measurement_id]",
+					"label": "3b",
+					"padding": 4,
+					"badge": "right"
+				},
+				{
+					"selector": "form:has(input[value=analytics]) button[type=submit]",
+					"label": "3c",
+					"padding": 4,
+					"badge": "right"
+				}
+			]
+		},
+		{
+			"name": "ga-04-connected",
+			"url": "/administrator/index.php?option=com_sitekit&view=services",
+			"highlights": [
+				{
+					"selector": ".card:has(input[name=feature][value=analytics])",
+					"label": "4",
+					"badge": "right"
+				}
+			]
+		},
+		{
+			"name": "rep-03-sc-report",
+			"url": "/administrator/index.php?option=com_sitekit&view=reports",
+			"settle_ms": 2500,
+			"actions": [
+				{
+					"select": [
+						"#sitekit-report-picker",
+						"searchconsole"
+					]
+				},
+				{
+					"click": "[data-sitekit-load-report]"
+				},
+				{
+					"wait": ".com-sitekit-report-card:not([hidden]) .com-sitekit-metric-grid"
+				}
+			],
+			"highlights": [
+				{
+					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-metric-grid",
+					"label": "3a"
+				},
+				{
+					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-chart-panel",
+					"label": "3b"
+				},
+				{
+					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-tables-grid",
+					"label": "3c"
+				}
+			]
+		},
+		{
+			"name": "rep-04-tools",
+			"url": "/administrator/index.php?option=com_sitekit&view=reports",
+			"settle_ms": 2500,
+			"actions": [
+				{
+					"select": [
+						"#sitekit-report-picker",
+						"searchconsole"
+					]
+				},
+				{
+					"click": "[data-sitekit-load-report]"
+				},
+				{
+					"wait": ".com-sitekit-report-card:not([hidden]) .com-sitekit-metric-grid"
+				}
+			],
+			"highlights": [
+				{
+					"selector": ".com-sitekit-report-card:not([hidden]) [data-report-status]",
+					"label": "4a",
+					"padding": 4,
+					"badge": "top"
+				},
+				{
+					"selector": "[data-sitekit-refresh-one]",
+					"label": "4b",
+					"padding": 4,
+					"badge": "top"
+				},
+				{
+					"selector": "[data-sitekit-gsc-link]",
+					"label": "4c",
+					"padding": 4,
+					"badge": "right"
+				}
+			]
+		},
+		{
+			"name": "rep-05-ga-report",
+			"url": "/administrator/index.php?option=com_sitekit&view=reports",
+			"settle_ms": 2500,
+			"actions": [
+				{
+					"select": [
+						"#sitekit-report-picker",
+						"analytics"
+					]
+				},
+				{
+					"click": "[data-sitekit-load-report]"
+				},
+				{
+					"wait": ".com-sitekit-report-card:not([hidden]) .com-sitekit-metric-grid"
+				}
+			],
+			"highlights": [
+				{
+					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-metric-grid",
+					"label": "5a"
+				},
+				{
+					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-chart-panel",
+					"label": "5b"
+				},
+				{
+					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-chart-panel ~ .com-sitekit-chart-panel",
+					"label": "5c"
+				},
+				{
+					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-chart-panel ~ .com-sitekit-chart-panel ~ .com-sitekit-chart-panel",
+					"label": "5d"
+				},
+				{
+					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-tables-grid",
+					"label": "5e"
+				}
+			]
+		}
+	]
+}

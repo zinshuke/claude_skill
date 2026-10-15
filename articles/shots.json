@@ -1,0 +1,1235 @@
+{
+	"base_url": "http://localhost:3000",
+	"viewport": {
+		"width": 1440,
+		"height": 900
+	},
+	"hide": [
+		".phpdebugbar",
+		"#system-debug"
+	],
+	"blur": [],
+	"shots": [
+		{
+			"name": "list-01-menu-empty",
+			"url": "/administrator/index.php?option=com_content&view=articles",
+			"highlights": [
+				{
+					"selector": "#sidebarmenu a[href$=\"option=com_content&view=articles\"]",
+					"label": "1",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "list-02-empty-state",
+			"url": "/administrator/index.php?option=com_content&view=articles",
+			"highlights": [
+				{
+					"selector": ".btn.btn-primary.emptystate-btnadd",
+					"label": "2",
+					"padding": 6
+				}
+			]
+		},
+		{
+			"name": "cat-01-new",
+			"url": "/administrator/index.php?option=com_categories&view=categories&extension=com_content",
+			"highlights": [
+				{
+					"selector": "#sidebarmenu a[href$=\"option=com_categories&view=categories&extension=com_content\"]",
+					"label": "1a",
+					"padding": 4
+				},
+				{
+					"selector": "#toolbar-new",
+					"label": "1b",
+					"padding": 4,
+					"badge": "right"
+				}
+			]
+		},
+		{
+			"name": "cat-02-form",
+			"url": "/administrator/index.php?option=com_categories&task=category.add&extension=com_content",
+			"actions": [
+				{
+					"fill": [
+						"#jform_title",
+						"Guide sample"
+					]
+				}
+			],
+			"highlights": [
+				{
+					"selector": ".control-group:has(#jform_title)",
+					"label": "2a"
+				},
+				{
+					"selector": "#toolbar-dropdown-save-group",
+					"label": "2b",
+					"padding": 4,
+					"badge": "top"
+				}
+			]
+		},
+		{
+			"name": "cat-03-saved",
+			"url": "/administrator/index.php?option=com_categories&task=category.edit&id=8&extension=com_content",
+			"settle_ms": 800,
+			"actions": [
+				{
+					"wait": "#jform_title"
+				},
+				{
+					"click": "#toolbar-dropdown-save-group >> text=Save & Close"
+				},
+				{
+					"wait": "#categoryList"
+				},
+				{
+					"eval": "document.querySelectorAll('#categoryList tbody tr').forEach(r=>{if(r.innerText.includes('Guide sample'))r.dataset.guide='1'})"
+				}
+			],
+			"highlights": [
+				{
+					"selector": "#system-message-container joomla-alert",
+					"label": "3a",
+					"padding": 4
+				},
+				{
+					"selector": "#categoryList tr[data-guide=\"1\"]",
+					"label": "3b",
+					"padding": 2
+				}
+			]
+		},
+		{
+			"name": "art-01-new",
+			"url": "/administrator/index.php?option=com_content&view=articles",
+			"highlights": [
+				{
+					"selector": "#toolbar-new",
+					"label": "1",
+					"padding": 4,
+					"badge": "right"
+				}
+			]
+		},
+		{
+			"name": "art-02-title-text",
+			"url": "/administrator/index.php?option=com_content&task=article.add",
+			"settle_ms": 800,
+			"actions": [
+				{
+					"wait": ".tox-tinymce"
+				},
+				{
+					"fill": [
+						"#jform_title",
+						"Guide sample: Welcome to our site"
+					]
+				},
+				{
+					"eval": "tinymce.activeEditor.setContent(\"<p>Welcome to our new website. Here you will find news about our work, our team and our services.</p><p>This is a <strong>sample article</strong> made for the Joomla Articles guide. It shows how text, headings and lists look on the site.</p><h3>What you will find here</h3><ul><li>News and announcements</li><li>Guides and tips</li><li>Contact details</li></ul>\")"
+				}
+			],
+			"highlights": [
+				{
+					"selector": ".control-group:has(#jform_title)",
+					"label": "2a"
+				},
+				{
+					"selector": ".tox-tinymce",
+					"label": "2b"
+				}
+			]
+		},
+		{
+			"name": "art-03-settings",
+			"url": "/administrator/index.php?option=com_content&task=article.add",
+			"settle_ms": 800,
+			"actions": [
+				{
+					"wait": ".tox-tinymce"
+				},
+				{
+					"fill": [
+						"#jform_title",
+						"Guide sample: Welcome to our site"
+					]
+				},
+				{
+					"eval": "tinymce.activeEditor.setContent(\"<p>Welcome to our new website. Here you will find news about our work, our team and our services.</p><p>This is a <strong>sample article</strong> made for the Joomla Articles guide. It shows how text, headings and lists look on the site.</p><h3>What you will find here</h3><ul><li>News and announcements</li><li>Guides and tips</li><li>Contact details</li></ul>\")"
+				},
+				{
+					"eval": "document.querySelector('#jform_catid').closest('joomla-field-fancy-select').choicesInstance.setChoiceByValue('8')"
+				}
+			],
+			"highlights": [
+				{
+					"selector": ".control-group:has(#jform_state)",
+					"label": "3a",
+					"padding": 4
+				},
+				{
+					"selector": ".control-group:has(#jform_catid)",
+					"label": "3b",
+					"padding": 4
+				},
+				{
+					"selector": ".control-group:has(#jform_featured)",
+					"label": "3c",
+					"padding": 4
+				},
+				{
+					"selector": ".control-group:has(#jform_access)",
+					"label": "3d",
+					"padding": 4
+				},
+				{
+					"selector": ".control-group:has(#jform_tags)",
+					"label": "3e",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "art-04-save-buttons",
+			"url": "/administrator/index.php?option=com_content&task=article.add",
+			"settle_ms": 800,
+			"actions": [
+				{
+					"wait": ".tox-tinymce"
+				},
+				{
+					"fill": [
+						"#jform_title",
+						"Guide sample: Welcome to our site"
+					]
+				},
+				{
+					"eval": "tinymce.activeEditor.setContent(\"<p>Welcome to our new website. Here you will find news about our work, our team and our services.</p><p>This is a <strong>sample article</strong> made for the Joomla Articles guide. It shows how text, headings and lists look on the site.</p><h3>What you will find here</h3><ul><li>News and announcements</li><li>Guides and tips</li><li>Contact details</li></ul>\")"
+				},
+				{
+					"eval": "document.querySelector('#jform_catid').closest('joomla-field-fancy-select').choicesInstance.setChoiceByValue('8')"
+				},
+				{
+					"click": "#toolbar-dropdown-save-group .dropdown-toggle-split"
+				},
+				{
+					"wait_ms": 400
+				}
+			],
+			"highlights": [
+				{
+					"selector": "#toolbar-apply",
+					"label": "4a",
+					"padding": 4,
+					"badge": "top"
+				},
+				{
+					"selector": "#toolbar-dropdown-save-group",
+					"label": "4b",
+					"padding": 4,
+					"badge": "top"
+				},
+				{
+					"selector": "#toolbar-dropdown-save-group .dropdown-menu",
+					"label": "4c",
+					"padding": 4,
+					"badge": "right"
+				},
+				{
+					"selector": "#toolbar-cancel",
+					"label": "4d",
+					"padding": 4,
+					"badge": "top"
+				}
+			]
+		},
+		{
+			"name": "art-05-created",
+			"url": "/administrator/index.php?option=com_content&task=article.add",
+			"settle_ms": 800,
+			"actions": [
+				{
+					"wait": ".tox-tinymce"
+				},
+				{
+					"fill": [
+						"#jform_title",
+						"Guide sample: Welcome to our site"
+					]
+				},
+				{
+					"eval": "tinymce.activeEditor.setContent(\"<p>Welcome to our new website. Here you will find news about our work, our team and our services.</p><p>This is a <strong>sample article</strong> made for the Joomla Articles guide. It shows how text, headings and lists look on the site.</p><h3>What you will find here</h3><ul><li>News and announcements</li><li>Guides and tips</li><li>Contact details</li></ul>\")"
+				},
+				{
+					"eval": "document.querySelector('#jform_catid').closest('joomla-field-fancy-select').choicesInstance.setChoiceByValue('8')"
+				},
+				{
+					"click": "#toolbar-apply"
+				},
+				{
+					"wait": "#system-message-container joomla-alert"
+				}
+			],
+			"highlights": [
+				{
+					"selector": "#system-message-container joomla-alert",
+					"label": "5",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "find-04-locked",
+			"url": "/administrator/index.php?option=com_content&view=articles",
+			"highlights": [
+				{
+					"selector": "#articleList tbody tr:first-child a:has(.icon-checkedout)",
+					"label": "4",
+					"padding": 4
+				}
+			],
+			"actions": [
+				{
+					"hover": "#articleList tbody tr:first-child a:has(.icon-checkedout)"
+				},
+				{
+					"wait_ms": 400
+				}
+			]
+		},
+		{
+			"name": "find-05-checkin",
+			"url": "/administrator/index.php?option=com_content&view=articles",
+			"actions": [
+				{
+					"click": "#articleList tbody tr:first-child input[type=checkbox]"
+				},
+				{
+					"click": "#toolbar-status-group button.dropdown-toggle, #toolbar-status-group > button"
+				},
+				{
+					"wait_ms": 400
+				}
+			],
+			"highlights": [
+				{
+					"selector": "#articleList tbody tr:first-child input[type=checkbox]",
+					"label": "5a",
+					"padding": 4
+				},
+				{
+					"selector": "#toolbar-status-group",
+					"label": "5b",
+					"padding": 4,
+					"badge": "top"
+				},
+				{
+					"selector": "#status-group-children-checkin, [id$=checkin]",
+					"label": "5c",
+					"padding": 2,
+					"badge": "right"
+				}
+			]
+		},
+		{
+			"name": "img-01-tab",
+			"url": "/administrator/index.php?option=com_content&task=article.edit&id=1",
+			"actions": [
+				{
+					"wait": "#jform_title"
+				},
+				{
+					"click": "button[aria-controls=images]"
+				},
+				{
+					"wait_ms": 300
+				}
+			],
+			"highlights": [
+				{
+					"selector": "button[aria-controls=images]",
+					"label": "1",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "img-02-select",
+			"url": "/administrator/index.php?option=com_content&task=article.edit&id=1",
+			"settle_ms": 1500,
+			"actions": [
+				{
+					"wait": "#jform_title"
+				},
+				{
+					"click": "button[aria-controls=images]"
+				},
+				{
+					"wait_ms": 300
+				},
+				{
+					"click": ".control-group:has(#jform_images_image_intro) .button-select"
+				},
+				{
+					"wait_ms": 2500
+				}
+			],
+			"highlights": [
+				{
+					"selector": "dialog[open]",
+					"label": "2",
+					"badge": "top"
+				}
+			],
+			"full_page": false
+		},
+		{
+			"name": "img-03-fields",
+			"url": "/administrator/index.php?option=com_content&task=article.edit&id=1",
+			"settle_ms": 800,
+			"actions": [
+				{
+					"wait": "#jform_title"
+				},
+				{
+					"click": "button[aria-controls=images]"
+				},
+				{
+					"wait_ms": 300
+				},
+				{
+					"eval": "(()=>{const i=document.querySelector('#jform_images_image_intro');const f=i.closest('joomla-field-media');if(f&&f.setValue){f.setValue('images/headers/maple.jpg')}else{i.value='images/headers/maple.jpg';i.dispatchEvent(new Event('change',{bubbles:true}))}})()"
+				},
+				{
+					"fill": [
+						"#jform_images_image_intro_alt",
+						"Red maple leaves in autumn"
+					]
+				},
+				{
+					"eval": "(()=>{const i=document.querySelector('#jform_images_image_fulltext');const f=i.closest('joomla-field-media');if(f&&f.setValue){f.setValue('images/headers/blue-flower.jpg')}else{i.value='images/headers/blue-flower.jpg';i.dispatchEvent(new Event('change',{bubbles:true}))}})()"
+				},
+				{
+					"fill": [
+						"#jform_images_image_fulltext_alt",
+						"Close-up of a blue flower"
+					]
+				},
+				{
+					"wait_ms": 500
+				}
+			],
+			"highlights": [
+				{
+					"selector": ".control-group:has(#jform_images_image_intro)",
+					"label": "3a",
+					"padding": 4
+				},
+				{
+					"selector": ".control-group:has(#jform_images_image_intro_alt)",
+					"label": "3b",
+					"padding": 4
+				},
+				{
+					"selector": ".control-group:has(#jform_images_image_fulltext)",
+					"label": "3c",
+					"padding": 4
+				},
+				{
+					"selector": ".control-group:has(#jform_images_image_fulltext_alt)",
+					"label": "3d",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "img-04-inline",
+			"url": "/administrator/index.php?option=com_content&task=article.edit&id=1",
+			"settle_ms": 800,
+			"actions": [
+				{
+					"wait": "#jform_title"
+				},
+				{
+					"click": "button[aria-controls=general]"
+				},
+				{
+					"wait": ".tox-tinymce"
+				}
+			],
+			"highlights": [
+				{
+					"selector": ".tox-tbtn:has(.tox-tbtn__select-label), .tox-toolbar__group:first-child .tox-tbtn",
+					"label": "4",
+					"padding": 2
+				}
+			],
+			"post_actions": [
+				{
+					"click": ".tox-tbtn:has-text('CMS Content')"
+				},
+				{
+					"wait_ms": 600
+				}
+			],
+			"full_page": false
+		},
+		{
+			"name": "img-05-saved",
+			"url": "/administrator/index.php?option=com_content&task=article.edit&id=1",
+			"settle_ms": 800,
+			"actions": [
+				{
+					"wait": "#jform_title"
+				},
+				{
+					"click": "button[aria-controls=images]"
+				},
+				{
+					"wait_ms": 300
+				},
+				{
+					"eval": "(()=>{const i=document.querySelector('#jform_images_image_intro');const f=i.closest('joomla-field-media');if(f&&f.setValue){f.setValue('images/headers/maple.jpg')}else{i.value='images/headers/maple.jpg';i.dispatchEvent(new Event('change',{bubbles:true}))}})()"
+				},
+				{
+					"fill": [
+						"#jform_images_image_intro_alt",
+						"Red maple leaves in autumn"
+					]
+				},
+				{
+					"eval": "(()=>{const i=document.querySelector('#jform_images_image_fulltext');const f=i.closest('joomla-field-media');if(f&&f.setValue){f.setValue('images/headers/blue-flower.jpg')}else{i.value='images/headers/blue-flower.jpg';i.dispatchEvent(new Event('change',{bubbles:true}))}})()"
+				},
+				{
+					"fill": [
+						"#jform_images_image_fulltext_alt",
+						"Close-up of a blue flower"
+					]
+				},
+				{
+					"wait_ms": 500
+				},
+				{
+					"click": "button[aria-controls=general]"
+				},
+				{
+					"fill": [
+						"#jform_version_note",
+						"Added intro and full article images"
+					]
+				},
+				{
+					"click": "#toolbar-dropdown-save-group >> text=Save & Close"
+				},
+				{
+					"wait": "#articleList"
+				},
+				{
+					"eval": "document.querySelectorAll('#articleList tbody tr').forEach(r=>{if(r.innerText.includes('Welcome to our site'))r.dataset.guide='1'})"
+				}
+			],
+			"highlights": [
+				{
+					"selector": "#system-message-container joomla-alert",
+					"label": "5a",
+					"padding": 4
+				},
+				{
+					"selector": "#articleList tr[data-guide=\"1\"]",
+					"label": "5b",
+					"padding": 2
+				}
+			]
+		},
+		{
+			"name": "pub-01-toggle",
+			"url": "/administrator/index.php?option=com_content&view=articles",
+			"actions": [
+				{
+					"hover": "#articleList tbody tr:has(a[href$=\"article.edit&id=1\"]) td:nth-child(4) .tbody-icon"
+				},
+				{
+					"wait_ms": 400
+				}
+			],
+			"highlights": [
+				{
+					"selector": "#articleList tbody tr:has(a[href$=\"article.edit&id=1\"]) td:nth-child(4) .tbody-icon",
+					"label": "1",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "pub-02-actions",
+			"url": "/administrator/index.php?option=com_content&view=articles",
+			"actions": [
+				{
+					"click": "#articleList tbody tr:has(a[href$=\"article.edit&id=1\"]) input[type=checkbox]"
+				},
+				{
+					"click": "#toolbar-status-group > button"
+				},
+				{
+					"wait_ms": 400
+				}
+			],
+			"highlights": [
+				{
+					"selector": "#articleList tbody tr:has(a[href$=\"article.edit&id=1\"]) input[type=checkbox]",
+					"label": "2a",
+					"padding": 4
+				},
+				{
+					"selector": "#status-group-children-publish",
+					"label": "2b",
+					"padding": 2,
+					"badge": "right"
+				},
+				{
+					"selector": "#status-group-children-unpublish",
+					"label": "2c",
+					"padding": 2,
+					"badge": "right"
+				}
+			]
+		},
+		{
+			"name": "pub-03-schedule",
+			"url": "/administrator/index.php?option=com_content&task=article.add",
+			"settle_ms": 600,
+			"actions": [
+				{
+					"wait": "#jform_title"
+				},
+				{
+					"click": "button[aria-controls=general]"
+				},
+				{
+					"fill": [
+						"#jform_title",
+						"Guide sample: Scheduled news"
+					]
+				},
+				{
+					"eval": "tinymce.activeEditor.setContent(\"<p>Our new service starts in December. This sample article is scheduled: it stays hidden until its start date.</p>\")"
+				},
+				{
+					"eval": "document.querySelector('#jform_catid').closest('joomla-field-fancy-select').choicesInstance.setChoiceByValue('8')"
+				},
+				{
+					"click": "button[aria-controls=publishing]"
+				},
+				{
+					"fill": [
+						"#jform_publish_up",
+						"2026-12-01 09:00:00"
+					]
+				},
+				{
+					"fill": [
+						"#jform_publish_down",
+						"2026-12-31 23:59:00"
+					]
+				},
+				{
+					"click": "#jform_created_by_alias"
+				}
+			],
+			"highlights": [
+				{
+					"selector": ".control-group:has(#jform_publish_up)",
+					"label": "3a",
+					"padding": 4
+				},
+				{
+					"selector": ".control-group:has(#jform_publish_down)",
+					"label": "3b",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "pub-04-scheduled",
+			"url": "/administrator/index.php?option=com_content&task=article.add",
+			"settle_ms": 800,
+			"actions": [
+				{
+					"wait": "#jform_title"
+				},
+				{
+					"click": "button[aria-controls=general]"
+				},
+				{
+					"fill": [
+						"#jform_title",
+						"Guide sample: Scheduled news"
+					]
+				},
+				{
+					"eval": "tinymce.activeEditor.setContent(\"<p>Our new service starts in December. This sample article is scheduled: it stays hidden until its start date.</p>\")"
+				},
+				{
+					"eval": "document.querySelector('#jform_catid').closest('joomla-field-fancy-select').choicesInstance.setChoiceByValue('8')"
+				},
+				{
+					"click": "button[aria-controls=publishing]"
+				},
+				{
+					"fill": [
+						"#jform_publish_up",
+						"2026-12-01 09:00:00"
+					]
+				},
+				{
+					"fill": [
+						"#jform_publish_down",
+						"2026-12-31 23:59:00"
+					]
+				},
+				{
+					"click": "#jform_created_by_alias"
+				},
+				{
+					"click": "#toolbar-dropdown-save-group >> text=Save & Close"
+				},
+				{
+					"wait": "#articleList"
+				},
+				{
+					"eval": "document.querySelectorAll('#articleList tbody tr').forEach(r=>{if(r.innerText.includes('Scheduled news'))r.dataset.guide='1'})"
+				},
+				{
+					"hover": "#articleList tr[data-guide=\"1\"] td:nth-child(4) .tbody-icon, #articleList tr[data-guide=\"1\"] td:nth-child(4) button"
+				},
+				{
+					"wait_ms": 400
+				}
+			],
+			"highlights": [
+				{
+					"selector": "#articleList tr[data-guide=\"1\"] td:nth-child(4) .tbody-icon, #articleList tr[data-guide=\"1\"] td:nth-child(4) button",
+					"label": "4",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "feat-01-toggle",
+			"url": "/administrator/index.php?option=com_content&view=articles",
+			"actions": [
+				{
+					"hover": "#articleList tbody tr:has(a[href$=\"article.edit&id=1\"]) .tbody-icon, #articleList tbody tr:has(a[href$=\"article.edit&id=1\"]) td:nth-child(4) button"
+				},
+				{
+					"wait_ms": 400
+				}
+			],
+			"highlights": [
+				{
+					"selector": "#articleList tbody tr:has(a[href$=\"article.edit&id=1\"]) td:nth-child(4) button, #articleList tbody tr:has(a[href$=\"article.edit&id=1\"]) .js-grid-item-action",
+					"label": "1",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "feat-02-featured",
+			"url": "/administrator/index.php?option=com_content&view=articles",
+			"settle_ms": 600,
+			"actions": [
+				{
+					"click": "#articleList tbody tr:has(a[href$=\"article.edit&id=1\"]) td:nth-child(3) .tbody-icon, #articleList tbody tr:has(a[href$=\"article.edit&id=1\"]) .js-grid-item-action"
+				},
+				{
+					"wait": "#system-message-container joomla-alert"
+				}
+			],
+			"highlights": [
+				{
+					"selector": "#system-message-container joomla-alert",
+					"label": "2a",
+					"padding": 4
+				},
+				{
+					"selector": "#articleList tbody tr:has(a[href$=\"article.edit&id=1\"]) td:nth-child(3) .tbody-icon",
+					"label": "2b",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "feat-03-featured-list",
+			"url": "/administrator/index.php?option=com_content&view=featured",
+			"highlights": [
+				{
+					"selector": ".js-stools-field-filter:has(#filter_featured), #filter_featured",
+					"label": "3a",
+					"padding": 2
+				},
+				{
+					"selector": "#articleList tbody tr:first-child",
+					"label": "3b",
+					"padding": 2
+				}
+			]
+		},
+		{
+			"name": "org-00-create",
+			"url": "/administrator/index.php?option=com_content&task=article.add",
+			"settle_ms": 600,
+			"actions": [
+				{
+					"wait": "#jform_title"
+				},
+				{
+					"click": "button[aria-controls=general]"
+				},
+				{
+					"fill": [
+						"#jform_title",
+						"Guide sample: Old notice"
+					]
+				},
+				{
+					"eval": "tinymce.activeEditor.setContent('<p>The office is closed on public holidays. This sample notice is out of date and will be archived.</p>')"
+				},
+				{
+					"eval": "document.querySelector('#jform_catid').closest('joomla-field-fancy-select').choicesInstance.setChoiceByValue('8')"
+				},
+				{
+					"click": "#toolbar-dropdown-save-group >> text=Save & Close"
+				},
+				{
+					"wait": "#articleList"
+				}
+			],
+			"highlights": []
+		},
+		{
+			"name": "org-01-batch",
+			"url": "/administrator/index.php?option=com_content&view=articles&filter[featured]=&filter[published]=",
+			"full_page": false,
+			"settle_ms": 800,
+			"actions": [
+				{
+					"eval": "document.querySelectorAll('#articleList tbody tr').forEach(r=>{if(r.innerText.includes('Old notice'))r.dataset.guide='1'})"
+				},
+				{
+					"click": "#articleList tr[data-guide=\"1\"] input[type=checkbox]"
+				},
+				{
+					"click": "#toolbar-status-group > button"
+				},
+				{
+					"click": "#status-group-children-batch"
+				},
+				{
+					"wait_ms": 1200
+				}
+			],
+			"highlights": [
+				{
+					"selector": "dialog[open] .joomla-dialog-container, dialog[open]",
+					"label": "1",
+					"badge": "top"
+				}
+			]
+		},
+		{
+			"name": "org-02-menu",
+			"url": "/administrator/index.php?option=com_content&view=articles&filter[featured]=&filter[published]=",
+			"actions": [
+				{
+					"eval": "document.querySelectorAll('#articleList tbody tr').forEach(r=>{if(r.innerText.includes('Old notice'))r.dataset.guide='1'})"
+				},
+				{
+					"click": "#articleList tr[data-guide=\"1\"] input[type=checkbox]"
+				},
+				{
+					"click": "#toolbar-status-group > button"
+				},
+				{
+					"wait_ms": 400
+				}
+			],
+			"highlights": [
+				{
+					"selector": "#articleList tr[data-guide=\"1\"] input[type=checkbox]",
+					"label": "2a",
+					"padding": 4
+				},
+				{
+					"selector": "#status-group-children-archive",
+					"label": "2b",
+					"padding": 2,
+					"badge": "right"
+				},
+				{
+					"selector": "#status-group-children-trash",
+					"label": "2c",
+					"padding": 2,
+					"badge": "right"
+				}
+			]
+		},
+		{
+			"name": "org-03-trashed",
+			"url": "/administrator/index.php?option=com_content&view=articles&filter[featured]=&filter[published]=",
+			"settle_ms": 600,
+			"actions": [
+				{
+					"eval": "document.querySelectorAll('#articleList tbody tr').forEach(r=>{if(r.innerText.includes('Old notice'))r.dataset.guide='1'})"
+				},
+				{
+					"click": "#articleList tr[data-guide=\"1\"] input[type=checkbox]"
+				},
+				{
+					"click": "#toolbar-status-group > button"
+				},
+				{
+					"click": "#status-group-children-trash"
+				},
+				{
+					"wait": "#system-message-container joomla-alert"
+				},
+				{
+					"click": "button.js-stools-btn-filter"
+				},
+				{
+					"wait_ms": 300
+				},
+				{
+					"select": [
+						"#filter_published",
+						"-2"
+					]
+				},
+				{
+					"wait": "#toolbar-delete"
+				},
+				{
+					"eval": "document.querySelectorAll('#articleList tbody tr').forEach(r=>{if(r.innerText.includes('Old notice'))r.dataset.guide='1'})"
+				}
+			],
+			"highlights": [
+				{
+					"selector": ".js-stools-field-filter:has(#filter_published), #filter_published",
+					"label": "3a",
+					"padding": 2
+				},
+				{
+					"selector": "#articleList tr[data-guide=\"1\"]",
+					"label": "3b",
+					"padding": 2
+				},
+				{
+					"selector": "#toolbar-delete",
+					"label": "3c",
+					"padding": 4,
+					"badge": "right"
+				}
+			]
+		},
+		{
+			"name": "org-04-restored",
+			"url": "/administrator/index.php?option=com_content&view=articles&filter[featured]=&filter[published]=-2",
+			"settle_ms": 600,
+			"actions": [
+				{
+					"eval": "document.querySelectorAll('#articleList tbody tr').forEach(r=>{if(r.innerText.includes('Old notice'))r.dataset.guide='1'})"
+				},
+				{
+					"click": "#articleList tr[data-guide=\"1\"] input[type=checkbox]"
+				},
+				{
+					"click": "#toolbar-status-group > button"
+				},
+				{
+					"click": "#status-group-children-publish"
+				},
+				{
+					"wait": "#system-message-container joomla-alert"
+				}
+			],
+			"highlights": [
+				{
+					"selector": "#system-message-container joomla-alert",
+					"label": "4",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "find-01-search",
+			"url": "/administrator/index.php?option=com_content&view=articles&filter[featured]=&filter[published]=",
+			"actions": [
+				{
+					"fill": [
+						"#filter_search",
+						"Welcome"
+					]
+				},
+				{
+					"click": ".js-stools-btn-search, button[aria-label='Search'], .filter-search-bar__button"
+				},
+				{
+					"wait": "#articleList"
+				}
+			],
+			"highlights": [
+				{
+					"selector": ".filter-search-bar, .js-stools-container-bar .input-group",
+					"label": "1a",
+					"padding": 2
+				},
+				{
+					"selector": "#articleList tbody tr:first-child",
+					"label": "1b",
+					"padding": 2
+				}
+			]
+		},
+		{
+			"name": "find-02-filters",
+			"url": "/administrator/index.php?option=com_content&view=articles&filter[featured]=&filter[published]=",
+			"actions": [
+				{
+					"click": "button.js-stools-btn-filter"
+				},
+				{
+					"wait_ms": 400
+				}
+			],
+			"highlights": [
+				{
+					"selector": "button.js-stools-btn-filter",
+					"label": "2a",
+					"padding": 4,
+					"badge": "top"
+				},
+				{
+					"selector": ".js-stools-container-filters",
+					"label": "2b",
+					"padding": 4
+				},
+				{
+					"selector": ".js-stools-btn-clear",
+					"label": "2c",
+					"padding": 4,
+					"badge": "top"
+				}
+			]
+		},
+		{
+			"name": "find-03-sort",
+			"url": "/administrator/index.php?option=com_content&view=articles&filter[featured]=&filter[published]=",
+			"highlights": [
+				{
+					"selector": ".js-stools-field-list:has(#list_fullordering), #list_fullordering",
+					"label": "3a",
+					"padding": 2,
+					"badge": "top"
+				},
+				{
+					"selector": "#articleList thead a[data-order=\"a.title\"]",
+					"label": "3b",
+					"padding": 4,
+					"badge": "top"
+				},
+				{
+					"selector": ".js-stools-field-list:has(#list_limit), #list_limit",
+					"label": "3c",
+					"padding": 2,
+					"badge": "top"
+				}
+			]
+		},
+		{
+			"name": "find-06-open",
+			"url": "/administrator/index.php?option=com_content&view=articles&filter[featured]=&filter[published]=",
+			"highlights": [
+				{
+					"selector": "#articleList tbody tr:first-child th a[href*=\"article.edit\"]",
+					"label": "6",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "list-03-overview",
+			"url": "/administrator/index.php?option=com_content&view=articles&filter[featured]=&filter[published]=",
+			"highlights": [
+				{
+					"selector": "#toolbar-new",
+					"label": "3a",
+					"padding": 4,
+					"badge": "top"
+				},
+				{
+					"selector": "#toolbar-status-group",
+					"label": "3b",
+					"padding": 4,
+					"badge": "top"
+				},
+				{
+					"selector": ".js-stools-container-bar",
+					"label": "3c",
+					"padding": 4,
+					"badge": "top"
+				},
+				{
+					"selector": "#articleList",
+					"label": "3d",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "ver-01-buttons",
+			"url": "/administrator/index.php?option=com_content&task=article.edit&id=1",
+			"actions": [
+				{
+					"wait": "#jform_title"
+				},
+				{
+					"click": "button[aria-controls=general]"
+				},
+				{
+					"wait": ".tox-tinymce"
+				}
+			],
+			"highlights": [
+				{
+					"selector": "#toolbar-versions",
+					"label": "1a",
+					"padding": 4,
+					"badge": "top"
+				},
+				{
+					"selector": "#toolbar-preview",
+					"label": "1b",
+					"padding": 4,
+					"badge": "top"
+				}
+			]
+		},
+		{
+			"name": "ver-02-history",
+			"url": "/administrator/index.php?option=com_content&task=article.edit&id=1",
+			"full_page": false,
+			"settle_ms": 1500,
+			"actions": [
+				{
+					"wait": "#jform_title"
+				},
+				{
+					"click": "button[aria-controls=general]"
+				},
+				{
+					"wait": ".tox-tinymce"
+				},
+				{
+					"click": "#toolbar-versions button, #toolbar-versions"
+				},
+				{
+					"wait_ms": 2500
+				}
+			],
+			"highlights": [
+				{
+					"selector": "dialog[open]",
+					"label": "2",
+					"badge": "top"
+				}
+			]
+		},
+		{
+			"name": "ver-03-preview",
+			"url": "/administrator/index.php?option=com_content&task=article.edit&id=1",
+			"full_page": false,
+			"settle_ms": 1500,
+			"actions": [
+				{
+					"wait": "#jform_title"
+				},
+				{
+					"click": "button[aria-controls=general]"
+				},
+				{
+					"wait": ".tox-tinymce"
+				},
+				{
+					"click": "#toolbar-preview button, #toolbar-preview"
+				},
+				{
+					"wait_ms": 3000
+				}
+			],
+			"highlights": [
+				{
+					"selector": ".modal.show .modal-content, dialog[open]",
+					"label": "3",
+					"badge": "top"
+				}
+			]
+		},
+		{
+			"name": "seo-01-alias",
+			"url": "/administrator/index.php?option=com_content&task=article.edit&id=1",
+			"actions": [
+				{
+					"wait": "#jform_title"
+				},
+				{
+					"click": "button[aria-controls=general]"
+				},
+				{
+					"wait": ".tox-tinymce"
+				}
+			],
+			"highlights": [
+				{
+					"selector": ".control-group:has(#jform_alias)",
+					"label": "1",
+					"padding": 4
+				}
+			]
+		},
+		{
+			"name": "seo-02-meta",
+			"url": "/administrator/index.php?option=com_content&task=article.edit&id=1",
+			"actions": [
+				{
+					"wait": "#jform_title"
+				},
+				{
+					"click": "button[aria-controls=publishing]"
+				},
+				{
+					"fill": [
+						"#jform_metadesc",
+						"A warm welcome to our new website: news about our work, our team and our services, plus guides and contact details."
+					]
+				}
+			],
+			"highlights": [
+				{
+					"selector": ".control-group:has(#jform_metadesc)",
+					"label": "2a",
+					"padding": 4
+				},
+				{
+					"selector": ".control-group:has(#jform_metadata_robots)",
+					"label": "2b",
+					"padding": 4
+				}
+			]
+		}
+	]
+}

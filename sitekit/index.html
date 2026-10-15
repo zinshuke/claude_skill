@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SiteKit Admin Guide</title>
+<style>
+:root{--bg:#f6f7f9;--panel:#fff;--text:#1d2330;--muted:#5d6675;--line:#dfe3ea;--accent:#e5262f;
+--accent-soft:#fdecec;--code:#eef1f5;--shadow:0 1px 3px rgba(16,24,40,.08),0 4px 16px rgba(16,24,40,.06)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#11141a;--panel:#191d25;--text:#e6e9ef;
+--muted:#9aa3b2;--line:#2a303b;--accent-soft:#3a1d20;--code:#232833;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+:root[data-theme=dark]{--bg:#11141a;--panel:#191d25;--text:#e6e9ef;--muted:#9aa3b2;--line:#2a303b;
+--accent-soft:#3a1d20;--code:#232833;--shadow:0 1px 3px rgba(0,0,0,.4)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--accent)}
+.layout{display:grid;grid-template-columns:280px minmax(0,1fr);max-width:1320px;margin:0 auto;gap:32px;padding:24px 16px}
+nav.toc{position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto;background:var(--panel);
+border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:var(--shadow)}
+nav.toc .back{display:block;font-size:13px;color:var(--muted);text-decoration:none;margin-bottom:8px}
+nav.toc h2{font-size:15px;margin:0 0 10px}
+nav.toc input{width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);margin-bottom:10px}
+nav.toc ol{list-style:none;margin:0;padding:0;counter-reset:s}
+nav.toc li a{display:flex;gap:8px;padding:6px 8px;border-radius:8px;color:var(--text);text-decoration:none;font-size:14px;line-height:1.35}
+nav.toc li a::before{counter-increment:s;content:counter(s);color:var(--muted);min-width:18px;font-variant-numeric:tabular-nums}
+nav.toc li a:hover{background:var(--bg)}
+nav.toc li a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+main{min-width:0}
+header.hero{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:28px 32px;margin-bottom:24px;box-shadow:var(--shadow)}
+header.hero h1{margin:0 0 6px;font-size:30px;line-height:1.2}
+header.hero .meta{color:var(--muted);font-size:14px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
+.toolbar{display:flex;gap:8px;margin-left:auto}
+.toolbar button{border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:13px}
+section.guide{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:28px 32px;margin-bottom:24px;box-shadow:var(--shadow)}
+section.guide h2{margin:0 0 12px;font-size:24px;line-height:1.25}
+section.guide>ol{counter-reset:step;list-style:none;padding:0;margin:20px 0}
+section.guide>ol>li{counter-increment:step;position:relative;padding:0 0 18px 48px;margin-bottom:6px;border-left:2px solid var(--line);margin-left:15px}
+section.guide>ol>li:last-child{border-left-color:transparent}
+section.guide>ol>li::before{content:counter(step);position:absolute;left:-16px;top:-2px;width:30px;height:30px;border-radius:50%;
+background:var(--accent);color:#fff;font-weight:700;font-size:15px;display:grid;place-items:center;border:2px solid var(--panel);box-shadow:0 1px 4px rgba(0,0,0,.25)}
+section.guide>ol>li>p:first-child{margin-top:0}
+figure{margin:14px 0 6px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px}
+figure img{display:block;width:100%;height:auto;border-radius:6px;cursor:zoom-in}
+figcaption{font-size:13px;color:var(--muted);padding:6px 4px 0}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14.5px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--bg)}
+code{background:var(--code);padding:1px 6px;border-radius:5px;font-size:.9em}
+strong{font-weight:650}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:24px;z-index:10;cursor:zoom-out}
+.lightbox.open{display:flex}
+.lightbox img{max-width:min(1440px,100%);height:auto;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.hidden{display:none!important}
+footer{color:var(--muted);font-size:13px;text-align:center;padding:8px 0 32px}
+@media (max-width:900px){.layout{grid-template-columns:1fr;gap:16px}nav.toc{position:static;max-height:none}
+header.hero,section.guide{padding:20px 16px}section.guide>ol>li{padding-left:36px}}
+@media print{nav.toc,.toolbar,.lightbox{display:none!important}.layout{display:block;padding:0}body{background:#fff}
+header.hero,section.guide{box-shadow:none;border:0;padding:0 0 12px}figure{break-inside:avoid}section.guide{break-before:page}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+<a class="back" href="../index.html">&larr; All guides</a>
+<h2>Contents</h2>
+<input id="filter" type="search" placeholder="Search this guide" aria-label="Search this guide">
+<ol><li><a href="#before-you-start">Before you start</a></li><li><a href="#open-sitekit-and-read-the-dashboard">Open SiteKit and read the Dashboard</a></li><li><a href="#connect-google-try-sitekit-with-your-google-account">Connect Google: try SiteKit with your Google account</a></li><li><a href="#connect-google-with-your-own-google-cloud-client">Connect Google with your own Google Cloud client</a></li><li><a href="#set-up-search-console">Set up Search Console</a></li><li><a href="#set-up-analytics-4">Set up Analytics 4</a></li><li><a href="#set-up-tag-manager">Set up Tag Manager</a></li><li><a href="#verify-site-ownership">Verify site ownership</a></li><li><a href="#read-your-reports">Read your reports</a></li><li><a href="#plugins-your-public-site-and-permissions">Plugins, your public site and permissions</a></li><li><a href="#troubleshooting">Troubleshooting</a></li></ol>
+</nav>
+<main>
+<header class="hero">
+<h1>SiteKit Admin Guide</h1>
+<div class="meta"><span>Updated 2026-10-15</span><span>11 sections</span><span>26 screenshots</span><span>For site owner / non-technical admin</span><span><a href="https://claude.ai/code/artifact/280d3335-e5b2-47cd-8333-4c982bf5f4a0">Online version</a></span>
+<div class="toolbar"><button id="theme" type="button">Light / dark</button><button id="print" type="button">Print / PDF</button></div></div>
+
+</header>
+<section class="guide" id="before-you-start"><h2>Before you start</h2>
+<p>SiteKit connects this Joomla site to Google Search Console, Analytics 4, Tag Manager and Site Verification, and shows their reports inside the administrator. You find it under <strong>Components → SiteKit</strong>, which has four screens: <strong>Dashboard</strong>, <strong>Reports</strong>, <strong>Services</strong> and <strong>Settings</strong>.</p>
+<p><strong>Who can do what</strong> (set in SiteKit <strong>Options → Permissions</strong>):</p>
+<table>
+<thead>
+<tr>
+<th>Permission</th>
+<th>Lets the user</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Access Administration Interface (<code>core.manage</code>) or <strong>View Dashboard</strong></td>
+<td>Open Dashboard, Reports and Services, and load reports</td>
+</tr>
+<tr>
+<td><strong>Connect Google</strong></td>
+<td>Connect or disconnect Google, start or end the trial, authorize scopes, save feature settings, run site verification</td>
+</tr>
+<tr>
+<td>Configure ACL &amp; Options (<code>core.admin</code>)</td>
+<td>Everything above, plus open <strong>Settings</strong> and save the Google Cloud Client ID and Secret</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Connection modes.</strong> Every screen adapts to how Google is connected:</p>
+<ul>
+<li><strong>Not connected</strong>: nothing is linked yet.</li>
+<li><strong>Trial</strong>: you sign in with your own Google account through SiteKit's shared app. Only Search Console and Analytics reports work, with a limited number of report views and an end date.</li>
+<li><strong>Trial ended</strong>: reports are locked until you connect your own Google Cloud client.</li>
+<li><strong>Connected (own client)</strong>: the production setup, using a Google Cloud OAuth client you create. All features work.</li>
+</ul>
+<p>The screenshots in this guide come from a test site at <code>http://localhost:3000</code>. On your site you will see your own web address instead, including in the redirect URI on the Settings screen.</p>
+</section><section class="guide" id="open-sitekit-and-read-the-dashboard"><h2>Open SiteKit and read the Dashboard</h2>
+<p>The Dashboard is SiteKit's start page. It tells you what is set up, what is still missing, and which Google services are ready. Steps 1 to 4 show a site where nothing is connected yet; step 5 shows the Dashboard once Search Console is set up.</p>
+<ol>
+<li>
+<p>In the left menu, click <strong>Components → SiteKit → Dashboard</strong>.</p>
+<figure><img loading="lazy" width="1440" height="1191" alt="Step 1: the SiteKit Dashboard link in the Components menu" src="img/dash-01-menu.png" /><figcaption>Step 1: the SiteKit Dashboard link in the Components menu</figcaption></figure>
+</li>
+<li>
+<p>Follow the <strong>Setup</strong> box from top to bottom. It has three steps: <strong>Connect Google</strong> (choose the trial or your own Google Cloud client), <strong>Google account</strong> (sign in to Google), and <strong>Configure core features</strong> (choose which Google services to use). A step that is done shows a green <strong>Ready</strong> or <strong>Connected</strong> label. Each step has a button that takes you to the right screen.</p>
+<figure><img loading="lazy" width="1440" height="1191" alt="Step 2: the Setup box with its three steps" src="img/dash-02-setup.png" /><figcaption>Step 2: the Setup box with its three steps</figcaption></figure>
+</li>
+<li>
+<p>Check the <strong>Status</strong> box for a quick summary. <strong>Credentials</strong> shows whether your Google Cloud details are saved (<strong>Ready</strong> or <strong>Missing</strong>). <strong>Google account</strong> shows whether SiteKit is signed in to Google (<strong>Connected</strong> or <strong>Not connected</strong>).</p>
+<figure><img loading="lazy" width="1440" height="1191" alt="Step 3: the Status box" src="img/dash-03-status.png" /><figcaption>Step 3: the Status box</figcaption></figure>
+</li>
+<li>
+<p>Look at the <strong>Features</strong> list to see each Google service and its state:</p>
+<ul>
+<li><strong>Connected</strong>: set up and working.</li>
+<li><strong>Installed</strong>: ready to set up on the <strong>Services</strong> screen.</li>
+<li><strong>Add-on (not installed)</strong>: an optional extra that has to be installed first.</li>
+</ul>
+<figure><img loading="lazy" width="1440" height="1191" alt="Step 4: the Features list with the state of each Google service" src="img/dash-04-features.png" /><figcaption>Step 4: the Features list with the state of each Google service</figcaption></figure>
+</li>
+<li>
+<p>Once Search Console is set up, a <strong>Search traffic</strong> box appears at the top. It shows your clicks, impressions, average CTR and average position for the last 28 days, a daily chart (dotted lines are the 28 days before), and your top five Google searches. Click <strong>View Search Console report</strong> for the full report.</p>
+<figure><img loading="lazy" width="1440" height="1891" alt="Step 5: the Search traffic box with totals, chart and top queries" src="img/dash-05-search-traffic.png" /><figcaption>Step 5: the Search traffic box with totals, chart and top queries</figcaption></figure>
+</li>
+</ol>
+<p>The Dashboard updates by itself as you finish each setup step, so it is a good place to check what is still missing.</p>
+</section><section class="guide" id="connect-google-try-sitekit-with-your-google-account"><h2>Connect Google: try SiteKit with your Google account</h2>
+<p>The trial lets you see your real Search Console and Analytics reports without setting anything up in Google Cloud. It is limited: it covers Search Console and Analytics reports only, allows a set number of report views, and ends on a fixed date. For ongoing use, connect your own Google Cloud client (next section).</p>
+<ol>
+<li>
+<p>Go to <strong>Components → SiteKit → Settings</strong> and click <strong>Try with my Google</strong>.</p>
+<figure><img loading="lazy" width="1440" height="939" alt="Step 1: the Try with my Google button on SiteKit Settings" src="img/trial-01-start.png" /><figcaption>Step 1: the Try with my Google button on SiteKit Settings</figcaption></figure>
+</li>
+<li>
+<p>On Google's page, choose the Google account that manages your site in Search Console and Analytics, then allow access. Google sends you back to SiteKit.</p>
+</li>
+<li>A blue <strong>Demo trial</strong> banner now shows on every SiteKit screen. The Settings screen shows how many report views are left and when the trial ends.</li>
+</ol>
+<p>To stop the trial, click <strong>End trial</strong> on the Settings screen. If you get the message <strong>Trial service request failed</strong>, the trial service is not available: connect your own Google Cloud client instead.</p>
+</section><section class="guide" id="connect-google-with-your-own-google-cloud-client"><h2>Connect Google with your own Google Cloud client</h2>
+<p>Use this for production. You need a Super User account and a Google Cloud project with an OAuth client of type <strong>Web application</strong>.</p>
+<ol>
+<li>
+<p>Go to <strong>Components → SiteKit → Settings</strong>. Click <strong>Copy</strong> next to <strong>Authorized redirect URI</strong> and add that exact URI to your OAuth client in Google Cloud Console.</p>
+<figure><img loading="lazy" width="1440" height="939" alt="Step 1: copy the Authorized redirect URI on SiteKit Settings" src="img/byo-01-redirect-uri.png" /><figcaption>Step 1: copy the Authorized redirect URI on SiteKit Settings</figcaption></figure>
+</li>
+<li>
+<p>Paste the <strong>Client ID</strong> (2a) and <strong>Client Secret</strong> (2b) from Google Cloud, then click <strong>Save &amp; Close</strong> (2c).</p>
+<figure><img loading="lazy" width="1440" height="939" alt="Step 2: enter Client ID and Client Secret, then save" src="img/byo-02-credentials.png" /><figcaption>Step 2: enter Client ID and Client Secret, then save</figcaption></figure>
+</li>
+<li>
+<p>Open <strong>Settings</strong> again. In the <strong>Connection</strong> box, click <strong>Connect with Google</strong>.</p>
+</li>
+<li>On Google's page, choose the Google account that manages your site in Search Console and Analytics, and allow access. Google sends you back to SiteKit.</li>
+<li>
+<p>Check the <strong>Connection</strong> box: it now shows <strong>Connected</strong> and the Google account you used. The Dashboard shows <strong>Ready</strong> and <strong>Connected</strong> too.</p>
+<figure><img loading="lazy" width="1440" height="906" alt="Step 5: the Connection box showing Connected and the Google account" src="img/byo-05-connected.png" /><figcaption>Step 5: the Connection box showing Connected and the Google account</figcaption></figure>
+</li>
+</ol>
+<p>To stop using Google, click <strong>Disconnect</strong> in the <strong>Connection</strong> box. Reports stop working until you connect again. Your Client ID and Secret stay saved.</p>
+</section><section class="guide" id="set-up-search-console"><h2>Set up Search Console</h2>
+<p>Search Console shows how people find your site on Google: which searches show it, how often, and how often people click. Before you start, Google must be connected, and your Google account must have access to your site in Search Console. If the card shows <strong>Authorize Google scopes</strong> instead of a property list, click it first and allow access on Google's page.</p>
+<ol>
+<li>
+<p>Go to <strong>Components → SiteKit → Services</strong> and find the <strong>Search Console</strong> card.</p>
+<figure><img loading="lazy" width="1440" height="943" alt="Step 1: the Search Console card on the Services screen" src="img/sc-01-card.png" /><figcaption>Step 1: the Search Console card on the Services screen</figcaption></figure>
+</li>
+<li>
+<p>In <strong>Search Console property</strong>, choose your site (2a). If one entry matches this site, it is marked <strong>suggested for this site</strong>. Whole-domain properties appear as <strong>Domain: example.com</strong>. Click <strong>Save &amp; Close</strong> (2b).</p>
+<figure><img loading="lazy" width="1440" height="943" alt="Step 2: choose the Search Console property and save" src="img/sc-02-property.png" /><figcaption>Step 2: choose the Search Console property and save</figcaption></figure>
+</li>
+<li>
+<p>The card's label changes to <strong>Connected</strong> and shows the property you chose. A <strong>Search traffic</strong> box now appears at the top of the Dashboard, and the full report is available on the <strong>Reports</strong> screen.</p>
+<figure><img loading="lazy" width="1440" height="1099" alt="Step 3: the Search Console card showing Connected" src="img/sc-03-connected.png" /><figcaption>Step 3: the Search Console card showing Connected</figcaption></figure>
+</li>
+</ol>
+</section><section class="guide" id="set-up-analytics-4"><h2>Set up Analytics 4</h2>
+<p>Google Analytics 4 shows who visits your site: how many people, from where, on which devices and which pages. Before you start, Google must be connected, and your Google account must have access to the site's GA4 property.</p>
+<ol>
+<li>
+<p>Go to <strong>Components → SiteKit → Services</strong>. In the <strong>Analytics 4</strong> card, click <strong>Authorize Google scopes</strong>.</p>
+<figure><img loading="lazy" width="1440" height="943" alt="Step 1: the Authorize Google scopes button in the Analytics 4 card" src="img/ga-01-authorize.png" /><figcaption>Step 1: the Authorize Google scopes button in the Analytics 4 card</figcaption></figure>
+</li>
+<li>
+<p>On Google's page, choose the same Google account and allow SiteKit to see your Analytics data. Google sends you back to the Services screen.</p>
+</li>
+<li>
+<p>Choose your site's property in <strong>GA4 property</strong> (3a). Optional: in <strong>GA4 Measurement ID (optional tag)</strong> (3b), enter your site's ID, which starts with <strong>G-</strong>; SiteKit then adds the Google Analytics tracking code to every page of your public site. Leave it empty if your site already has that code, for example through your template or Tag Manager, so visits are not counted twice. Click <strong>Save &amp; Close</strong> (3c).</p>
+<figure><img loading="lazy" width="1440" height="1099" alt="Step 3: choose the GA4 property, optionally enter the Measurement ID, and save" src="img/ga-03-property.png" /><figcaption>Step 3: choose the GA4 property, optionally enter the Measurement ID, and save</figcaption></figure>
+</li>
+<li>
+<p>The card's label changes to <strong>Connected</strong>, and the <strong>Analytics 4</strong> report is available on the <strong>Reports</strong> screen.</p>
+<figure><img loading="lazy" width="1440" height="1099" alt="Step 4: the Analytics 4 card showing Connected" src="img/ga-04-connected.png" /><figcaption>Step 4: the Analytics 4 card showing Connected</figcaption></figure>
+</li>
+</ol>
+<p>You can find the Measurement ID in Google Analytics under <strong>Admin → Data streams</strong>, then select your website's stream.</p>
+</section><section class="guide" id="set-up-tag-manager"><h2>Set up Tag Manager</h2>
+<p>Google Tag Manager lets you manage tracking codes (Analytics, ads, chat tools) in one place at Google, without editing your site. SiteKit only needs your container ID; no Google approval step is needed. The Tag Manager form appears once Google is connected. Your container ID is shown at the top of your workspace in Tag Manager and starts with <strong>GTM-</strong>.</p>
+<ol>
+<li>
+<p>Go to <strong>Components → SiteKit → Services</strong>. In the <strong>Tag Manager</strong> card, enter your ID in <strong>GTM Container ID</strong> (1a), then click <strong>Save &amp; Close</strong> (1b).</p>
+<figure><img loading="lazy" width="1440" height="943" alt="Step 1: enter the GTM Container ID and save" src="img/gtm-01-container.png" /><figcaption>Step 1: enter the GTM Container ID and save</figcaption></figure>
+</li>
+<li>
+<p>The card's label changes to <strong>Connected</strong>. SiteKit now adds the Tag Manager code to every page of your public site.</p>
+</li>
+</ol>
+<p>To remove Tag Manager from your site, clear the <strong>GTM Container ID</strong> field and click <strong>Save &amp; Close</strong>. If Tag Manager already loads Google Analytics, leave the GA4 Measurement ID empty so visits are not counted twice.</p>
+</section><section class="guide" id="verify-site-ownership"><h2>Verify site ownership</h2>
+<p>Verification proves to Google that you own the site, which Search Console needs before it shows data for a new site. SiteKit adds Google's verification tag to your pages for you. Your site must be live on the internet: Google has to visit it, so a local test site (such as localhost) cannot be verified.</p>
+<ol>
+<li>
+<p>Go to <strong>Components → SiteKit → Services</strong>. In the <strong>Site Verification</strong> card, click <strong>Authorize Google scopes</strong>.</p>
+<figure><img loading="lazy" width="1440" height="943" alt="Step 1: the Authorize Google scopes button in the Site Verification card" src="img/ver-01-authorize.png" /><figcaption>Step 1: the Authorize Google scopes button in the Site Verification card</figcaption></figure>
+</li>
+<li>
+<p>On Google's page, choose the same Google account and allow access. Google sends you back to the Services screen.</p>
+</li>
+<li>In <strong>Site URL to verify</strong>, enter your site's public home page address, for example <code>https://www.example.com/</code>, and click <strong>Save &amp; Close</strong>.</li>
+<li>Click <strong>Get META token</strong>. The <strong>Verification status</strong> changes to <strong>Meta tag ready — publish the site, then verify</strong>, and SiteKit starts adding the tag to your public pages.</li>
+<li>Click <strong>Verify with Google</strong>. When Google finds the tag, the status changes to <strong>Verified</strong> and the card shows <strong>Connected</strong>.</li>
+</ol>
+<p>Keep the <strong>System - SiteKit Tags</strong> plugin enabled after verifying: Google checks the tag again from time to time.</p>
+</section><section class="guide" id="read-your-reports"><h2>Read your reports</h2>
+<p>The Reports screen shows your Google data inside Joomla. A report is available once its service is set up: Search Console needs a property, Analytics 4 needs a GA4 property.</p>
+<ol>
+<li>
+<p>Go to <strong>Components → SiteKit → Reports</strong> and choose a report in the <strong>Report</strong> list.</p>
+<figure><img loading="lazy" width="1440" height="906" alt="Step 1: choose a report in the Report list" src="img/rep-01-picker.png" /><figcaption>Step 1: choose a report in the Report list</figcaption></figure>
+</li>
+<li>
+<p>For Search Console and Analytics 4, choose a <strong>Date range</strong> (2a): the last 7, 14, 28 or 90 days. To see one page only, enter its address in <strong>Page URL (optional)</strong> (2b), for example <code>/contact</code>. Click <strong>Load</strong> (2c).</p>
+<figure><img loading="lazy" width="1440" height="906" alt="Step 2: choose the date range and page, then load the report" src="img/rep-02-filters.png" /><figcaption>Step 2: choose the date range and page, then load the report</figcaption></figure>
+</li>
+<li>
+<p>Read the <strong>Search Console</strong> report. The cards at the top (3a) show your totals; the small green or red figure under each one is the change from the period just before. The <strong>Clicks and impressions</strong> chart (3b) shows each day; solid lines are the chosen period, dotted lines the period before. <strong>Top queries</strong> and <strong>Top pages</strong> (3c) list the searches and pages that brought the most clicks.</p>
+<figure><img loading="lazy" width="1440" height="1924" alt="Step 3: the Search Console report with totals, daily chart and top lists" src="img/rep-03-sc-report.png" /><figcaption>Step 3: the Search Console report with totals, daily chart and top lists</figcaption></figure>
+</li>
+<li>
+<p>Reports are kept for about 60 minutes so the screen loads quickly. The label at the top right (4a) shows <strong>Cached</strong> (saved copy) or <strong>Live</strong> (just fetched from Google). Click <strong>Refresh</strong> (4b) to get the latest numbers. <strong>Open Search Console</strong> (4c) takes you to Google's own, more detailed screens.</p>
+<figure><img loading="lazy" width="1440" height="1924" alt="Step 4: the Cached label, Refresh button and Open Search Console link" src="img/rep-04-tools.png" /><figcaption>Step 4: the Cached label, Refresh button and Open Search Console link</figcaption></figure>
+</li>
+<li>
+<p>Choose <strong>Analytics 4</strong> in the <strong>Report</strong> list and click <strong>Load</strong> to read the visitor report. The cards (5a) show your totals with the change from the period before. <strong>Users and sessions</strong> (5b) is a daily chart. <strong>Traffic channels</strong> (5c) shows where visits come from, such as direct visits, Google searches or other sites. <strong>Devices</strong> (5d) compares desktop and mobile. The tables (5e) give the exact numbers per channel, device, country and page.</p>
+<figure><img loading="lazy" width="1440" height="3039" alt="Step 5: the Analytics 4 report with totals, charts and tables" src="img/rep-05-ga-report.png" /><figcaption>Step 5: the Analytics 4 report with totals, charts and tables</figcaption></figure>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Report</th>
+<th>Totals</th>
+<th>Charts and tables</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Search Console</td>
+<td>Clicks, Impressions, Average CTR (share of people who clicked), Average position in Google results</td>
+<td>Clicks and impressions chart, Top queries, Top pages</td>
+</tr>
+<tr>
+<td>Analytics 4</td>
+<td>Sessions, Users, Page views, Engagement rate, Avg. session duration</td>
+<td>Users and sessions chart, Traffic channels chart, Devices chart; tables for Traffic channels, Devices, Countries, Top pages</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gathering data…</strong> means Google has no numbers yet, which is normal for up to 48 hours after you connect a property.</p>
+</section><section class="guide" id="plugins-your-public-site-and-permissions"><h2>Plugins, your public site and permissions</h2>
+<p>SiteKit is made of the SiteKit screens plus five plugins. Keep all five enabled.</p>
+<ol>
+<li>
+<p>Go to <strong>System → Plugins</strong> and type <strong>sitekit</strong> in the search box (1a). The list shows the five SiteKit plugins (1b); a green tick means the plugin is enabled.</p>
+<figure><img loading="lazy" width="1440" height="900" alt="Step 1: the five SiteKit plugins in the Plugins list" src="img/plg-01-plugins.png" /><figcaption>Step 1: the five SiteKit plugins in the Plugins list</figcaption></figure>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>What it does</th>
+<th>If you disable it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SiteKit - Search Console</td>
+<td>Search Console card and report</td>
+<td>Search Console disappears from Services and Reports</td>
+</tr>
+<tr>
+<td>SiteKit - Analytics 4</td>
+<td>Analytics card, report and tracking code</td>
+<td>Analytics disappears from Services and Reports</td>
+</tr>
+<tr>
+<td>SiteKit - Tag Manager</td>
+<td>Tag Manager card and code</td>
+<td>Tag Manager code is no longer added</td>
+</tr>
+<tr>
+<td>SiteKit - Site Verification</td>
+<td>Verification card and tag</td>
+<td>The verification tag is no longer added</td>
+</tr>
+<tr>
+<td>System - SiteKit Tags</td>
+<td>Adds the codes and tags above to your public pages</td>
+<td>Nothing is added to your public site</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What SiteKit adds to your public site.</strong> Only visitors' pages are changed, never the administrator. SiteKit adds: the Google verification tag (once you click <strong>Get META token</strong>), the Analytics tracking code (if a Measurement ID is saved), and the Tag Manager code (if a container ID is saved).</p>
+<p><strong>Who can use SiteKit.</strong> By default only Super Users can. To let other administrators use it:</p>
+<ol>
+<li>
+<p>On the SiteKit Dashboard, click <strong>Options</strong>.</p>
+<figure><img loading="lazy" width="1440" height="1186" alt="Step 1: the Options button on the SiteKit Dashboard" src="img/perm-01-options.png" /><figcaption>Step 1: the Options button on the SiteKit Dashboard</figcaption></figure>
+</li>
+<li>
+<p>Choose a user group on the left, set each action to <strong>Allowed</strong> or <strong>Denied</strong> (2a), then click <strong>Save &amp; Close</strong> (2b).</p>
+<figure><img loading="lazy" width="1440" height="1215" alt="Step 2: set SiteKit permissions for a user group and save" src="img/perm-02-permissions.png" /><figcaption>Step 2: set SiteKit permissions for a user group and save</figcaption></figure>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Allows the group to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Access Administration Interface or View Dashboard</td>
+<td>Open the Dashboard, Reports and Services screens and load reports</td>
+</tr>
+<tr>
+<td>Connect Google</td>
+<td>Connect or disconnect Google, start or end the trial, authorize Google access, and save the cards on Services</td>
+</tr>
+<tr>
+<td>Configure ACL &amp; Options</td>
+<td>All of the above, plus the <strong>Settings</strong> screen (Client ID and Secret) and this Options screen</td>
+</tr>
+</tbody>
+</table>
+</section><section class="guide" id="troubleshooting"><h2>Troubleshooting</h2>
+<p>Most problems come from Google not being connected yet, or from a Google account that has no access to the site's properties.</p>
+<table>
+<thead>
+<tr>
+<th>You see</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Connect Google in Settings before using feature add-ons.</strong></td>
+<td>Connect Google first: see the trial or your own Google Cloud client section.</td>
+</tr>
+<tr>
+<td><strong>Client ID and Client Secret are required before connecting.</strong></td>
+<td>Paste both on the Settings screen and click <strong>Save &amp; Close</strong>, then <strong>Connect with Google</strong>.</td>
+</tr>
+<tr>
+<td><strong>Google authorization failed</strong> or <strong>Invalid OAuth state</strong></td>
+<td>Try <strong>Connect with Google</strong> again. Check that the redirect URI in Google Cloud matches the one on the Settings screen exactly.</td>
+</tr>
+<tr>
+<td><strong>No refresh token available</strong></td>
+<td>Click <strong>Disconnect</strong> on Settings, then <strong>Connect with Google</strong> again and allow access.</td>
+</tr>
+<tr>
+<td><strong>Connect Search Console scope and select a property in Services</strong></td>
+<td>On Services, click <strong>Authorize Google scopes</strong> in the Search Console card if shown, choose a property and save.</td>
+</tr>
+<tr>
+<td><strong>Authorize Analytics scope and select a GA4 property in Services</strong></td>
+<td>The same, in the Analytics 4 card.</td>
+</tr>
+<tr>
+<td>The property list is empty</td>
+<td>The connected Google account has no access to the site in Search Console or Analytics. Connect the account that manages the site, or ask the property owner to add you.</td>
+</tr>
+<tr>
+<td><strong>Gathering data…</strong></td>
+<td>Normal for up to 48 hours after connecting a property.</td>
+</tr>
+<tr>
+<td><strong>Trial service request failed</strong> or <strong>Could not start the Google trial</strong></td>
+<td>The trial service is not available. Connect your own Google Cloud client.</td>
+</tr>
+<tr>
+<td><strong>Your SiteKit trial has ended</strong></td>
+<td>Connect your own Google Cloud client to keep using reports.</td>
+</tr>
+<tr>
+<td><strong>Google API request failed (HTTP ...)</strong></td>
+<td>Google refused the request. Wait a few minutes and click <strong>Refresh</strong>; if it keeps happening, disconnect and connect again.</td>
+</tr>
+<tr>
+<td>A card shows <strong>Add-on (not installed)</strong></td>
+<td>PageSpeed Insights and Google Ads are optional extras. Install their SiteKit plugin first.</td>
+</tr>
+</tbody>
+</table>
+<p>This is the message you see on the Services and Reports screens before Google is connected:</p>
+<figure><img loading="lazy" width="1440" height="906" alt="The Connect Google warning on the Services screen" src="img/services-00-not-connected.png" /><figcaption>The Connect Google warning on the Services screen</figcaption></figure></section>
+<footer>Generated from sitekit-admin-guide.md by the admin-guide-screenshots skill.</footer>
+</main>
+</div>
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Screenshot"><img alt=""></div>
+<script>
+(function(){
+const root=document.documentElement;
+try{const t=localStorage.getItem('guide-theme');if(t)root.dataset.theme=t;}catch(e){}
+document.getElementById('theme').onclick=()=>{const d=root.dataset.theme==='dark'||(!root.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);
+root.dataset.theme=d?'light':'dark';try{localStorage.setItem('guide-theme',root.dataset.theme)}catch(e){}};
+document.getElementById('print').onclick=()=>window.print();
+const links=[...document.querySelectorAll('nav.toc li a')];
+const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+e.target.id));}})},{rootMargin:'0px 0px -70% 0px'});
+secs.forEach(s=>s&&io.observe(s));
+const q=document.getElementById('filter');
+q.oninput=()=>{const v=q.value.trim().toLowerCase();secs.forEach((s,i)=>{const hit=!v||s.textContent.toLowerCase().includes(v);
+s.classList.toggle('hidden',!hit);links[i].parentElement.classList.toggle('hidden',!hit);});};
+const lb=document.getElementById('lightbox'),lbi=lb.querySelector('img');
+document.querySelectorAll('figure img').forEach(i=>i.onclick=()=>{lbi.src=i.src;lbi.alt=i.alt;lb.classList.add('open')});
+lb.onclick=()=>lb.classList.remove('open');
+document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('open')});
+})();
+</script>
+</body>
+</html>
