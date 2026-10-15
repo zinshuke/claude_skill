@@ -15,6 +15,13 @@
 		"#system-debug"
 	],
 	"blur": [],
+	"redact": [
+		"properties/\\d+",
+		"accounts/\\d+",
+		"\\bG-[A-Z0-9]{6,}\\b",
+		"\\bGTM-(?!ABC1234)[A-Z0-9]{5,}\\b",
+		"\\d{8,}-[a-z0-9]{24,}\\.apps\\.googleusercontent\\.com"
+	],
 	"shots": [
 		{
 			"name": "byo-01-redirect-uri",
@@ -361,6 +368,11 @@
 					"label": "5",
 					"note": "Search traffic, last 28 days"
 				}
+			],
+			"post_actions": [
+				{
+					"eval": "window.Chart && Object.values(Chart.instances || {}).forEach(c => { c.options.animation = false; c.update('none'); })"
+				}
 			]
 		},
 		{
@@ -447,6 +459,11 @@
 					"label": "3c",
 					"note": "Top searches and pages"
 				}
+			],
+			"post_actions": [
+				{
+					"eval": "window.Chart && Object.values(Chart.instances || {}).forEach(c => { c.options.animation = false; c.update('none'); })"
+				}
 			]
 		},
 		{
@@ -488,6 +505,11 @@
 					"padding": 4,
 					"badge": "right",
 					"note": "Open Google's full report"
+				}
+			],
+			"post_actions": [
+				{
+					"eval": "window.Chart && Object.values(Chart.instances || {}).forEach(c => { c.options.animation = false; c.update('none'); })"
 				}
 			]
 		},
@@ -534,6 +556,11 @@
 					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-tables-grid",
 					"label": "5e",
 					"note": "Tables with exact numbers"
+				}
+			],
+			"post_actions": [
+				{
+					"eval": "window.Chart && Object.values(Chart.instances || {}).forEach(c => { c.options.animation = false; c.update('none'); })"
 				}
 			]
 		}

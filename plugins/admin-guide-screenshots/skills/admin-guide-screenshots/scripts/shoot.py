@@ -12,9 +12,12 @@ SHOTS.json (see ../shots.example.json):
     crop        true (default): crop each image to its boxes plus padding; false: whole page;
                 or {"padding": 60, "min_width": 800, "min_height": 400}; also per shot
     hide        selectors hidden on every shot (debug bars, cookie banners)
-    blur        selectors blurred on every shot (emails, secrets)
+    blur        selectors blurred on every shot (fields holding secrets or IDs)
+    redact      regexes; matching text anywhere on the page (text, field values, selected
+                options) is masked (x/0) and blurred. Email addresses are always blurred unless
+                "redact_emails": false. Also per shot.
     shots       list of {name, url, actions?, highlights, hide?, blur?, full_page?, color?,
-                crop?, crop_include?}; a highlight is {selector, label?, note?, color?,
+                crop?, crop_include?, redact?}; a highlight is {selector, label?, note?, color?,
                 badge?, padding?}
 
 Credentials come from ADMIN_GUIDE_USER / ADMIN_GUIDE_PASS, read from the
@@ -157,6 +160,83 @@ CROP_JS = """
 """
 
 
+EMAIL_RE = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}"
+
+# Hides every match of the patterns: the characters are replaced first (letters -> x,
+# digits -> 0) so the image never holds the real value, then blurred. A form field or select
+# showing a match is masked and blurred whole. Returns how many places were hidden.
+REDACT_JS = """
+(patterns) => {
+	const res = patterns.map((p) => new RegExp(p, 'gi'));
+	const hit = (s) => res.some((r) => { r.lastIndex = 0; return r.test(s); });
+	const blur = 'blur(5px)';
+	const mask = (s) => s.replace(/[A-Za-z]/g, 'x').replace(/[0-9]/g, '0');
+	let count = 0;
+	const docs = [document];
+	for (const f of document.querySelectorAll('iframe')) {
+		try { if (f.contentDocument && f.contentDocument.body) docs.push(f.contentDocument); } catch (e) {}
+	}
+	for (const doc of docs) {
+		for (const el of doc.querySelectorAll('input, textarea, select')) {
+			if (el.dataset.agsRedact) continue;
+			const opt = el.tagName === 'SELECT' ? el.selectedOptions[0] : null;
+			const v = opt ? opt.text : (el.tagName === 'SELECT' || el.type === 'password' ? '' : el.value);
+			if (!v || !hit(v)) continue;
+			if (opt) opt.text = mask(v); else el.value = mask(v);
+			el.style.filter = blur;
+			el.dataset.agsRedact = '1';
+			count++;
+		}
+		const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT, {acceptNode: (n) => {
+			const p = n.parentElement;
+			return p && !p.dataset.agsRedact && !/^(SCRIPT|STYLE|NOSCRIPT|OPTION|TEXTAREA)$/.test(p.tagName) && hit(n.nodeValue)
+				? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+		}});
+		const nodes = [];
+		while (walker.nextNode()) nodes.push(walker.currentNode);
+		for (const node of nodes) {
+			const text = node.nodeValue;
+			const ranges = [];
+			for (const r of res) {
+				r.lastIndex = 0;
+				let m;
+				while ((m = r.exec(text))) {
+					if (!m[0]) { r.lastIndex++; continue; }
+					ranges.push([m.index, m.index + m[0].length]);
+				}
+			}
+			ranges.sort((a, b) => a[0] - b[0]);
+			const merged = [];
+			for (const r of ranges) {
+				const last = merged[merged.length - 1];
+				if (last && r[0] <= last[1]) last[1] = Math.max(last[1], r[1]); else merged.push(r);
+			}
+			const frag = doc.createDocumentFragment();
+			let pos = 0;
+			for (const [a, b] of merged) {
+				frag.append(text.slice(pos, a));
+				const span = doc.createElement('span');
+				span.textContent = mask(text.slice(a, b));
+				span.dataset.agsRedact = '1';
+				Object.assign(span.style, {filter: blur, display: 'inline-block'});
+				frag.append(span);
+				pos = b;
+				count++;
+			}
+			frag.append(text.slice(pos));
+			node.replaceWith(frag);
+		}
+	}
+	return count;
+}
+"""
+
+
+def redact_patterns(spec: dict, shot: dict) -> list[str]:
+	emails = [EMAIL_RE] if spec.get("redact_emails", True) and shot.get("redact_emails", True) else []
+	return emails + spec.get("redact", []) + shot.get("redact", [])
+
+
 def crop_settings(spec: dict, shot: dict) -> dict | None:
 	"""Merged crop options for a shot, or None for an uncropped page/viewport."""
 	merged = dict(CROP)
@@ -275,6 +355,8 @@ def main() -> int:
 				spec.get("hide", []) + shot.get("hide", []),
 				spec.get("blur", []) + shot.get("blur", []),
 			)
+			patterns = redact_patterns(spec, shot)
+			redacted = page.evaluate(REDACT_JS, patterns) if patterns else 0
 			# Let charts finish resizing/animating after the injected styles changed the layout.
 			page.wait_for_timeout(int(shot.get("settle_ms", 300)))
 			color = shot.get("color", spec.get("color", BOX_COLOR))
@@ -286,6 +368,9 @@ def main() -> int:
 					run_action(page, action)
 			except Exception as e:
 				print(f"WARN {shot['name']}: post action failed: {str(e).splitlines()[0]}")
+			if patterns:
+				# Menus opened by post actions show new text.
+				redacted += page.evaluate(REDACT_JS, patterns)
 			file = out / f"{shot['name']}.png"
 			full_page = shot.get("full_page", True)
 			crop = crop_settings(spec, shot)
@@ -295,7 +380,7 @@ def main() -> int:
 				failures += 1
 				print(f"WARN {file}: highlight selector not found: {', '.join(missing)}")
 			else:
-				print(f"OK   {file}")
+				print(f"OK   {file}" + (f"  (blurred {redacted} personal item(s))" if redacted else ""))
 
 		browser.close()
 

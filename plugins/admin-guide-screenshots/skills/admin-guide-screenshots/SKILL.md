@@ -65,7 +65,9 @@ Round 2: how to capture
 5. **Site and login**: base URL (default from the project config, e.g. Docker port), and the role to
    capture as (Super User default; a limited role if the guide is for staff). Missing credentials → ask
    the user to put them in `.claude/admin-guide.env` themselves, or to give them so you write that file.
-6. **Privacy**: what to blur: account emails · account/property IDs · API keys/secrets · nothing.
+6. **Privacy**: personal data is always hidden (see "Personal data" in Phase 5): emails, names of real
+   people, client IDs/secrets, API keys, account/property IDs. Ask only what else to hide (customer or
+   order data, company names, domains) and whose names appear on the site (user and author names).
 7. **Domain shown**: the local URL as-is, or note that the reader's URLs will differ (screenshots
    always show the real local URL; never fake it).
 8. **Style**: box color (red `#e5262f` default, or the brand color), images cropped to the boxes with
@@ -146,6 +148,8 @@ if it needs the user, say exactly what to do and wait.
    - `"post_actions"`: actions run after the boxes are drawn, for menus that close when the page scrolls
      (box the button, then open its menu). `"full_page": false` for pop-up dialogs (viewport only).
    - `"settle_ms"` (default 300) waits before and after drawing boxes; use ~2500 on pages with charts so they finish animating.
+     If a chart is still caught mid-animation, stop it in `post_actions` (Chart.js:
+     `{"eval": "window.Chart && Object.values(Chart.instances).forEach(c => {c.options.animation = false; c.update('none')})"}`).
    - Selectors: the wrapper holding label + input + help (`.mb-3:has(#id)`, `.card:has(h2)`), found by
      reading the template, not guessed.
    - `actions`: `click`, `fill`, `select`, `hover`, `wait` (selector), `wait_ms`, `eval` (JS). Never submit
@@ -154,7 +158,15 @@ if it needs the user, say exactly what to do and wait.
      shot open the existing record and save it unchanged (same success message, no duplicates).
      Joomla success/error messages: `#system-message-container joomla-alert`. Joomla edit screens
      remember the last open tab: click the tab a shot needs instead of assuming the first one.
-   - `blur` (from the privacy answer) and `hide` (debug bars, cookie banners), global or per shot.
+   - **Personal data** never shows in a screenshot. Email addresses are hidden on every shot
+     automatically. Add `"redact": [regex, …]` at the top of `shots.json` for the rest: names of real
+     people (the site's user/author names, from the database), client IDs (`\\d{8,}-[a-z0-9]{24,}\\.apps\\.googleusercontent\\.com`),
+     account/property IDs (`properties/\\d+`), API keys, customer data. Matches anywhere on the page (text,
+     field values, selected options) are replaced with `x`/`0` and blurred, so the image never holds
+     the real value. For fields whose value is not text on the page, add their selector to `blur`.
+     Made-up example values typed by `actions` (`123456789012-abc…`, `GTM-ABC1234`) stay readable.
+     The run prints `blurred N personal item(s)` per shot.
+   - `hide` (debug bars, cookie banners), global or per shot.
 2. Run from the project root:
    ```bash
    python3 <skill>/scripts/shoot.py docs/admin-guide-screenshots/<guide>/shots.json \
@@ -162,8 +174,8 @@ if it needs the user, say exactly what to do and wait.
    ```
    `WARN … selector not found` = fix the selector, retake with `--only`.
 3. Look at every PNG (Read tool): box on the right element, badge and note readable and not covering
-   another box, crop showing enough to find the spot on the screen, blurred items blurred, no
-   debug output or PHP notices. Retake until right.
+   another box, crop showing enough to find the spot on the screen, no readable personal data
+   (emails, names, IDs, secrets) anywhere in the image, no debug output or PHP notices. Retake until right.
 4. Publish: Claude Doc → upload the PNGs as assets to the doc's URL, create a blob per asset, embed
    `![Step N: …](blob/<id>)` under its step (docs connector `topic.uploads`); store asset and blob ids in
    `guide.json.assets` so retakes replace the right image. Markdown → `![Step N: …](img/<name>.png)` with
@@ -208,6 +220,8 @@ python3 <skill>/scripts/build_html.py --zip       # + docs/admin-guide-screensho
 - Image right under its step; alt text "Step N: <what it shows>".
 - The step text and the box notes agree: a note is the short form of what the step says about that box.
 - Prerequisites (permission, state) once at the top of the section.
+- No personal data in the text either: use example values (`name@example.com`, `G-XXXXXXXXXX`,
+  `https://www.example.com/`) instead of the real account, IDs or names seen on the site.
 - Steps outside the site (Google Cloud Console, email) are named as such; their screenshots come from
   the user.
 - Tone and depth follow the audience answer; the language follows the language answer.

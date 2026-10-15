@@ -21,7 +21,10 @@
 		"base_url": "http://localhost:3000",
 		"role": "Super User (admin)",
 		"privacy_blur": [
-			"client id/secret"
+			"email addresses",
+			"names of real people",
+			"Google client ID/secret",
+			"Google account/property/measurement/container IDs"
 		],
 		"domain_shown": "keep localhost, add a note that readers see their own domain",
 		"style": "lime green #84cc16 box + numbered badge + short note, cropped to the boxes (60 px padding, min 800x400), 1440x900",

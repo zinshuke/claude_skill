@@ -8,6 +8,7 @@ A Claude Code plugin marketplace.
 
 Writes step-by-step admin guides for a web admin panel (Joomla by default). Every step has a screenshot
 cropped to the field or section the step describes, with a colored box, a numbered badge and a short note.
+Personal data (emails, names, client IDs, account IDs) is masked and blurred in every screenshot.
 
 How it works:
 - asks intake questions (feature, audience, guide type, output, language, login, privacy)
