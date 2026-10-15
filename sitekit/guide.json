@@ -24,7 +24,7 @@
 			"client id/secret"
 		],
 		"domain_shown": "keep localhost, add a note that readers see their own domain",
-		"style": "red box + numbered badge, full page, 1440x900",
+		"style": "lime green #84cc16 box + numbered badge + short note, cropped to the boxes (60 px padding, min 800x400), 1440x900",
 		"outline_approved": "2026-10-15"
 	},
 	"doc": {
@@ -316,5 +316,5 @@
 		"Analytics 'Top pages' table header is cut off ('SESSION') and rows are not sorted by sessions",
 		"Dashboard Search traffic header: the 'View Search Console report' button runs into the description text"
 	],
-	"output_local": "docs/admin-guides/sitekit/sitekit-admin-guide.md"
+	"output_local": "docs/admin-guide-screenshots/sitekit/sitekit-admin-guide.md"
 }

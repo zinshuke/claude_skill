@@ -4,6 +4,12 @@
 		"width": 1440,
 		"height": 900
 	},
+	"color": "#84cc16",
+	"crop": {
+		"padding": 60,
+		"min_width": 800,
+		"min_height": 400
+	},
 	"hide": [
 		".phpdebugbar",
 		"#system-debug"
@@ -16,7 +22,8 @@
 			"highlights": [
 				{
 					"selector": ".mb-3:has(#redirect_uri)",
-					"label": "1"
+					"label": "1",
+					"note": "Copy this URI into Google Cloud"
 				}
 			]
 		},
@@ -40,15 +47,18 @@
 			"highlights": [
 				{
 					"selector": ".mb-3:has(#client_id)",
-					"label": "2a"
+					"label": "2a",
+					"note": "Paste the Client ID"
 				},
 				{
 					"selector": ".mb-3:has(#client_secret)",
-					"label": "2b"
+					"label": "2b",
+					"note": "Paste the Client Secret"
 				},
 				{
 					"selector": "#adminForm button[type=submit]",
-					"label": "2c"
+					"label": "2c",
+					"note": "Save your credentials"
 				}
 			]
 		},
@@ -59,7 +69,8 @@
 				{
 					"selector": "#sidebarmenu a[href*=\"com_sitekit&view=dashboard\"]",
 					"label": "1",
-					"padding": 4
+					"padding": 4,
+					"note": "Open the SiteKit Dashboard"
 				}
 			]
 		},
@@ -69,7 +80,8 @@
 			"highlights": [
 				{
 					"selector": ".card:has(.com-sitekit-steps)",
-					"label": "2"
+					"label": "2",
+					"note": "Follow these three setup steps"
 				}
 			]
 		},
@@ -79,7 +91,8 @@
 			"highlights": [
 				{
 					"selector": ".col-md-4 .card",
-					"label": "3"
+					"label": "3",
+					"note": "Credentials and Google sign-in"
 				}
 			]
 		},
@@ -89,7 +102,8 @@
 			"highlights": [
 				{
 					"selector": ".com-sitekit-dashboard > .card:last-child",
-					"label": "4"
+					"label": "4",
+					"note": "State of each Google service"
 				}
 			]
 		},
@@ -99,7 +113,8 @@
 			"highlights": [
 				{
 					"selector": "a[href*=\"task=oauth.trialStart\"]",
-					"label": "1"
+					"label": "1",
+					"note": "Start the free trial"
 				}
 			]
 		},
@@ -109,7 +124,8 @@
 			"highlights": [
 				{
 					"selector": ".com-sitekit-services > .alert",
-					"label": ""
+					"label": "",
+					"note": "Connect Google first"
 				}
 			]
 		},
@@ -119,7 +135,8 @@
 			"highlights": [
 				{
 					"selector": ".com-sitekit-reports > .alert",
-					"label": ""
+					"label": "",
+					"note": "Connect Google first"
 				}
 			]
 		},
@@ -132,7 +149,8 @@
 			"highlights": [
 				{
 					"selector": ".col-lg-4 > .card:first-child",
-					"label": "5"
+					"label": "5",
+					"note": "Connected, with your Google account"
 				}
 			]
 		},
@@ -142,7 +160,8 @@
 			"highlights": [
 				{
 					"selector": ".card:has(input[name=feature][value=searchconsole])",
-					"label": "1"
+					"label": "1",
+					"note": "The Search Console card"
 				}
 			]
 		},
@@ -161,12 +180,14 @@
 				{
 					"selector": "form:has(input[value=searchconsole]) select[name=site_url]",
 					"label": "2a",
-					"padding": 4
+					"padding": 4,
+					"note": "Choose your site's property"
 				},
 				{
 					"selector": "form:has(input[value=searchconsole]) button[type=submit]",
 					"label": "2b",
-					"padding": 4
+					"padding": 4,
+					"note": "Save the property"
 				}
 			]
 		},
@@ -177,7 +198,8 @@
 				{
 					"selector": "a[href*=\"task=oauth.authorize\"][href*=\"feature=analytics\"]",
 					"label": "1",
-					"padding": 4
+					"padding": 4,
+					"note": "Allow access to Analytics"
 				}
 			]
 		},
@@ -196,12 +218,14 @@
 				{
 					"selector": "form:has(input[value=tagmanager]) input[name=container_id]",
 					"label": "1a",
-					"padding": 4
+					"padding": 4,
+					"note": "Enter your GTM container ID"
 				},
 				{
 					"selector": "form:has(input[value=tagmanager]) button[type=submit]",
 					"label": "1b",
-					"padding": 4
+					"padding": 4,
+					"note": "Save the container ID"
 				}
 			]
 		},
@@ -212,7 +236,8 @@
 				{
 					"selector": "a[href*=\"task=oauth.authorize\"][href*=\"feature=verification\"]",
 					"label": "1",
-					"padding": 4
+					"padding": 4,
+					"note": "Allow access to Site Verification"
 				}
 			]
 		},
@@ -234,7 +259,8 @@
 				{
 					"selector": "#sitekit-report-picker",
 					"label": "1",
-					"padding": 4
+					"padding": 4,
+					"note": "Choose a report"
 				}
 			]
 		},
@@ -256,17 +282,20 @@
 				{
 					"selector": "#sitekit-report-range",
 					"label": "2a",
-					"padding": 4
+					"padding": 4,
+					"note": "Pick the date range"
 				},
 				{
 					"selector": "#sitekit-report-url",
 					"label": "2b",
-					"padding": 4
+					"padding": 4,
+					"note": "Optional: one page only"
 				},
 				{
 					"selector": "[data-sitekit-load-report]",
 					"label": "2c",
-					"padding": 4
+					"padding": 4,
+					"note": "Load the report"
 				}
 			]
 		},
@@ -277,11 +306,13 @@
 				{
 					"selector": "#filter_search",
 					"label": "1a",
-					"padding": 4
+					"padding": 4,
+					"note": "Search for sitekit"
 				},
 				{
 					"selector": "#pluginList",
-					"label": "1b"
+					"label": "1b",
+					"note": "The five SiteKit plugins"
 				}
 			]
 		},
@@ -292,7 +323,8 @@
 				{
 					"selector": "#toolbar-options",
 					"label": "1",
-					"padding": 4
+					"padding": 4,
+					"note": "Open Options"
 				}
 			]
 		},
@@ -302,20 +334,22 @@
 			"highlights": [
 				{
 					"selector": "joomla-field-permissions",
-					"label": "2a"
+					"label": "2a",
+					"note": "Set Allowed or Denied"
 				},
 				{
 					"selector": "#toolbar-save",
 					"label": "2b",
 					"padding": 4,
-					"badge": "top"
+					"badge": "top",
+					"note": "Save the permissions"
 				}
 			]
 		},
 		{
 			"name": "dash-05-search-traffic",
 			"url": "/administrator/index.php?option=com_sitekit&view=dashboard",
-			"settle_ms": 2500,
+			"settle_ms": 5000,
 			"actions": [
 				{
 					"wait": "[data-sitekit-dashboard-sc] canvas"
@@ -324,7 +358,8 @@
 			"highlights": [
 				{
 					"selector": "[data-sitekit-dashboard-sc]",
-					"label": "5"
+					"label": "5",
+					"note": "Search traffic, last 28 days"
 				}
 			]
 		},
@@ -334,7 +369,8 @@
 			"highlights": [
 				{
 					"selector": ".card:has(input[name=feature][value=searchconsole])",
-					"label": "3"
+					"label": "3",
+					"note": "Connected, with the chosen property"
 				}
 			]
 		},
@@ -346,19 +382,22 @@
 					"selector": "form:has(input[value=analytics]) select[name=property_id]",
 					"label": "3a",
 					"padding": 4,
-					"badge": "right"
+					"badge": "right",
+					"note": "Choose your GA4 property"
 				},
 				{
 					"selector": "form:has(input[value=analytics]) input[name=measurement_id]",
 					"label": "3b",
 					"padding": 4,
-					"badge": "right"
+					"badge": "right",
+					"note": "Optional: tracking ID (G-…)"
 				},
 				{
 					"selector": "form:has(input[value=analytics]) button[type=submit]",
 					"label": "3c",
 					"padding": 4,
-					"badge": "right"
+					"badge": "right",
+					"note": "Save the settings"
 				}
 			]
 		},
@@ -369,7 +408,8 @@
 				{
 					"selector": ".card:has(input[name=feature][value=analytics])",
 					"label": "4",
-					"badge": "right"
+					"badge": "right",
+					"note": "Connected, report ready"
 				}
 			]
 		},
@@ -394,15 +434,18 @@
 			"highlights": [
 				{
 					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-metric-grid",
-					"label": "3a"
+					"label": "3a",
+					"note": "Totals and change"
 				},
 				{
 					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-chart-panel",
-					"label": "3b"
+					"label": "3b",
+					"note": "Clicks and impressions per day"
 				},
 				{
 					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-tables-grid",
-					"label": "3c"
+					"label": "3c",
+					"note": "Top searches and pages"
 				}
 			]
 		},
@@ -429,19 +472,22 @@
 					"selector": ".com-sitekit-report-card:not([hidden]) [data-report-status]",
 					"label": "4a",
 					"padding": 4,
-					"badge": "top"
+					"badge": "top",
+					"note": "Cached or Live"
 				},
 				{
 					"selector": "[data-sitekit-refresh-one]",
 					"label": "4b",
 					"padding": 4,
-					"badge": "top"
+					"badge": "top",
+					"note": "Get the latest numbers"
 				},
 				{
 					"selector": "[data-sitekit-gsc-link]",
 					"label": "4c",
 					"padding": 4,
-					"badge": "right"
+					"badge": "right",
+					"note": "Open Google's full report"
 				}
 			]
 		},
@@ -466,23 +512,28 @@
 			"highlights": [
 				{
 					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-metric-grid",
-					"label": "5a"
+					"label": "5a",
+					"note": "Totals and change"
 				},
 				{
 					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-chart-panel",
-					"label": "5b"
+					"label": "5b",
+					"note": "Users and sessions per day"
 				},
 				{
 					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-chart-panel ~ .com-sitekit-chart-panel",
-					"label": "5c"
+					"label": "5c",
+					"note": "Where visits come from"
 				},
 				{
 					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-chart-panel ~ .com-sitekit-chart-panel ~ .com-sitekit-chart-panel",
-					"label": "5d"
+					"label": "5d",
+					"note": "Desktop vs mobile"
 				},
 				{
 					"selector": ".com-sitekit-report-card:not([hidden]) .com-sitekit-tables-grid",
-					"label": "5e"
+					"label": "5e",
+					"note": "Tables with exact numbers"
 				}
 			]
 		}
