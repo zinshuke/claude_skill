@@ -1,0 +1,10 @@
+{
+  "name": "admin-guide-screenshots",
+  "version": "1.0.0",
+  "description": "Write step-by-step admin guides for a web admin panel (Joomla by default): intake questions, a code review of the feature, an approved outline, then per-section Playwright screenshots with numbered highlight boxes, published as a Claude Doc and/or Markdown and built into HTML pages.",
+  "author": {
+    "name": "Mo0nlight"
+  },
+  "repository": "https://github.com/zinshuke/claude_skill",
+  "keywords": ["documentation", "admin-guide", "screenshots", "playwright", "joomla", "tutorial"]
+}

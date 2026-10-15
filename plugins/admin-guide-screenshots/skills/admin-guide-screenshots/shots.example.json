@@ -1,0 +1,28 @@
+{
+	"base_url": "http://localhost:3000",
+	"viewport": {"width": 1440, "height": 900},
+	"hide": [".phpdebugbar", "#system-debug"],
+	"blur": [],
+	"shots": [
+		{
+			"name": "byo-01-redirect-uri",
+			"url": "/administrator/index.php?option=com_sitekit&view=settings",
+			"highlights": [
+				{"selector": ".mb-3:has(#redirect_uri)", "label": "1"}
+			]
+		},
+		{
+			"name": "byo-02-credentials",
+			"url": "/administrator/index.php?option=com_sitekit&view=settings",
+			"actions": [
+				{"fill": ["#client_id", "123456789012-abc123def456.apps.googleusercontent.com"]},
+				{"fill": ["#client_secret", "GOCSPX-example-secret"]}
+			],
+			"highlights": [
+				{"selector": ".mb-3:has(#client_id)", "label": "2a"},
+				{"selector": ".mb-3:has(#client_secret)", "label": "2b"},
+				{"selector": "#adminForm button[type=submit]", "label": "2c"}
+			]
+		}
+	]
+}

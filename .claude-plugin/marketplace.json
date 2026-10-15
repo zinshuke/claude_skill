@@ -1,0 +1,17 @@
+{
+  "name": "claude-skill",
+  "owner": {
+    "name": "Mo0nlight"
+  },
+  "metadata": {
+    "description": "Claude Code skills for documenting web admin panels.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "admin-guide-screenshots",
+      "source": "./plugins/admin-guide-screenshots",
+      "description": "Step-by-step admin guides where every step has a full-page screenshot with a red box and numbered badge on the field it describes."
+    }
+  ]
+}
