@@ -11,7 +11,7 @@
     {
       "name": "admin-guide-screenshots",
       "source": "./plugins/admin-guide-screenshots",
-      "description": "Step-by-step admin guides where every step has a full-page screenshot with a red box and numbered badge on the field it describes."
+      "description": "Step-by-step admin guides where every step has a screenshot cropped to the field it describes, with a colored box, numbered badge and short note."
     }
   ]
 }

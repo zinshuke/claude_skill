@@ -6,8 +6,8 @@ A Claude Code plugin marketplace.
 
 ### admin-guide-screenshots
 
-Writes step-by-step admin guides for a web admin panel (Joomla by default). Every step has a full-page
-screenshot with a red box and a numbered badge on the field or section the step describes.
+Writes step-by-step admin guides for a web admin panel (Joomla by default). Every step has a screenshot
+cropped to the field or section the step describes, with a colored box, a numbered badge and a short note.
 
 How it works:
 - asks intake questions (feature, audience, guide type, output, language, login, privacy)
@@ -41,7 +41,7 @@ python3 -m playwright install chromium   # or use an installed Google Chrome
   ADMIN_GUIDE_USER=admin
   ADMIN_GUIDE_PASS=...
   ```
-- Guides are written to `docs/admin-guides/<guide>/`.
+- Guides are written to `docs/admin-guide-screenshots/<guide>/`.
 - Joomla's administrator login form is the default. For any other admin panel, add a `login` block to
   `shots.json`:
   ```json

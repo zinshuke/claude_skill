@@ -8,9 +8,14 @@ SHOTS.json (see ../shots.example.json):
     base_url    site root, e.g. http://localhost:3000
     login       optional; defaults to the Joomla administrator login form
     viewport    {"width": 1440, "height": 900}
+    color       box/badge color, any CSS color (default #e5262f); also per shot and per highlight
+    crop        true (default): crop each image to its boxes plus padding; false: whole page;
+                or {"padding": 60, "min_width": 800, "min_height": 400}; also per shot
     hide        selectors hidden on every shot (debug bars, cookie banners)
     blur        selectors blurred on every shot (emails, secrets)
-    shots       list of {name, url, actions?, highlights, hide?, blur?, full_page?}
+    shots       list of {name, url, actions?, highlights, hide?, blur?, full_page?, color?,
+                crop?, crop_include?}; a highlight is {selector, label?, note?, color?,
+                badge?, padding?}
 
 Credentials come from ADMIN_GUIDE_USER / ADMIN_GUIDE_PASS, read from the
 environment or from --env-file (KEY=VALUE lines). Never put them in SHOTS.json.
@@ -35,64 +40,132 @@ JOOMLA_LOGIN = {
 }
 
 BOX_COLOR = "#e5262f"
+CROP = {"padding": 60, "min_width": 800, "min_height": 400}
 
-# Draws one box + numbered badge per highlight, in document coordinates so a
-# full-page screenshot keeps them in place.
+# Draws one box + tag (numbered badge, optional note) per highlight, in document
+# coordinates so a full-page screenshot keeps them in place.
 HIGHLIGHT_JS = """
-([items, color]) => {
+([items, defaultColor]) => {
 	const missing = [];
+	// Badge text in black or white, whichever reads better on the box color.
+	const textOn = (color) => {
+		const probe = document.createElement('div');
+		probe.style.color = color;
+		document.body.appendChild(probe);
+		const [r, g, b] = (getComputedStyle(probe).color.match(/[\\d.]+/g) || [0, 0, 0]).map(Number);
+		probe.remove();
+		return 0.299 * r + 0.587 * g + 0.114 * b > 160 ? '#111' : '#fff';
+	};
+	const docWidth = document.documentElement.scrollWidth;
+	const font = 'system-ui, -apple-system, Segoe UI, sans-serif';
 	for (const it of items) {
 		const el = document.querySelector(it.selector);
 		if (!el) { missing.push(it.selector); continue; }
 		el.scrollIntoView({block: 'center'});
 		const r = el.getBoundingClientRect();
 		const pad = it.padding ?? 6;
+		const color = it.color || defaultColor;
+		const boxLeft = r.left + scrollX - pad, boxTop = r.top + scrollY - pad;
+		const boxWidth = r.width + pad * 2, boxHeight = r.height + pad * 2;
 		const box = document.createElement('div');
 		box.className = 'ags-box';
 		Object.assign(box.style, {
 			position: 'absolute', zIndex: 2147483646, pointerEvents: 'none',
-			left: (r.left + scrollX - pad) + 'px', top: (r.top + scrollY - pad) + 'px',
-			width: (r.width + pad * 2) + 'px', height: (r.height + pad * 2) + 'px',
+			left: boxLeft + 'px', top: boxTop + 'px', width: boxWidth + 'px', height: boxHeight + 'px',
 			border: '3px solid ' + color, borderRadius: '6px',
 			boxShadow: '0 0 0 3px rgba(255,255,255,.85), 0 2px 10px rgba(0,0,0,.25)',
 			boxSizing: 'border-box',
 		});
 		document.body.appendChild(box);
-		if (it.label !== undefined && it.label !== null && it.label !== '') {
+		const label = it.label === undefined || it.label === null ? '' : String(it.label);
+		const note = it.note ? String(it.note) : '';
+		if (!label && !note) continue;
+		// Badge and note form one tag, placed outside the box so it never covers the target.
+		const tag = document.createElement('div');
+		tag.className = 'ags-tag';
+		Object.assign(tag.style, {
+			position: 'absolute', zIndex: 2147483647, pointerEvents: 'none', visibility: 'hidden',
+			display: 'flex', alignItems: 'stretch', maxWidth: '340px', overflow: 'hidden',
+			borderRadius: '16px', border: '2px solid ' + (note ? color : '#fff'), background: '#fff',
+			boxShadow: '0 2px 6px rgba(0,0,0,.35)', boxSizing: 'border-box',
+		});
+		if (label) {
 			const b = document.createElement('div');
-			b.className = 'ags-badge';
-			b.textContent = String(it.label);
-			const size = 30;
-			const boxLeft = r.left + scrollX - pad;
-			const boxTop = r.top + scrollY - pad;
-			// Outside the box's left edge so it never covers the target; on the corner when there is no room.
-			const width = Math.max(size, 12 + 10 * String(it.label).length);
-			const boxRight = boxLeft + r.width + pad * 2;
-			let left, top;
-			if (it.badge === 'top') {
-				left = boxLeft + (r.width + pad * 2 - width) / 2;
-				top = Math.max(2, boxTop - size - 4);
-			} else {
-				const outside = it.badge === 'right' ? boxRight + 6 : boxLeft - width - 6;
-				const fits = it.badge === 'right' ? outside + width <= document.documentElement.scrollWidth - 2 : outside >= 2;
-				left = fits ? outside : Math.max(2, boxLeft - size / 2);
-				top = fits ? boxTop : Math.max(2, boxTop - size / 2);
-			}
+			b.textContent = label;
 			Object.assign(b.style, {
-				position: 'absolute', zIndex: 2147483647, pointerEvents: 'none',
-				left: left + 'px', top: top + 'px', width: width + 'px', height: size + 'px',
-				lineHeight: size + 'px', borderRadius: size / 2 + 'px', background: color, color: '#fff',
-				font: '700 16px/30px system-ui, -apple-system, Segoe UI, sans-serif',
-				textAlign: 'center', border: '2px solid #fff',
-				boxShadow: '0 2px 6px rgba(0,0,0,.35)',
+				display: 'flex', alignItems: 'center', justifyContent: 'center', flex: '0 0 auto',
+				minWidth: '26px', minHeight: '26px', padding: '0 7px', boxSizing: 'border-box',
+				background: color, color: textOn(color), font: '700 16px/1 ' + font,
 			});
-			document.body.appendChild(b);
+			tag.appendChild(b);
 		}
+		if (note) {
+			const n = document.createElement('div');
+			n.textContent = note;
+			Object.assign(n.style, {
+				padding: '4px 10px', color: '#1d1d1f', background: '#fff',
+				font: '600 14px/1.3 ' + font, whiteSpace: 'normal', alignSelf: 'center',
+			});
+			tag.appendChild(n);
+		}
+		document.body.appendChild(tag);
+		const w = tag.offsetWidth, h = tag.offsetHeight;
+		const spots = {
+			left: [boxLeft - w - 6, boxTop],
+			right: [boxLeft + boxWidth + 6, boxTop],
+			top: [Math.min(boxLeft, docWidth - w - 2), boxTop - h - 6],
+			bottom: [Math.min(boxLeft, docWidth - w - 2), boxTop + boxHeight + 6],
+		};
+		const fits = ([x, y]) => x >= 2 && y >= 2 && x + w <= docWidth - 2;
+		const order = [it.badge || 'left', 'left', 'top', 'right', 'bottom'];
+		const [x, y] = spots[order.find((k) => spots[k] && fits(spots[k])) || 'bottom'];
+		Object.assign(tag.style, {left: Math.max(2, x) + 'px', top: Math.max(2, y) + 'px', visibility: 'visible'});
 	}
 	window.scrollTo(0, 0);
 	return missing;
 }
 """
+
+# Area around the boxes, tags and extra selectors, plus padding, grown to a minimum
+# size and kept inside the page (or the viewport when the shot is not full page).
+CROP_JS = """
+([extra, crop, fullPage]) => {
+	const els = [...document.querySelectorAll('.ags-box, .ags-tag')];
+	for (const s of extra) els.push(...document.querySelectorAll(s));
+	const offX = fullPage ? scrollX : 0, offY = fullPage ? scrollY : 0;
+	let x1 = Infinity, y1 = Infinity, x2 = -Infinity, y2 = -Infinity;
+	for (const el of els) {
+		const r = el.getBoundingClientRect();
+		if (!r.width && !r.height) continue;
+		x1 = Math.min(x1, r.left + offX); y1 = Math.min(y1, r.top + offY);
+		x2 = Math.max(x2, r.right + offX); y2 = Math.max(y2, r.bottom + offY);
+	}
+	if (x1 === Infinity) return null;
+	const maxW = fullPage ? document.documentElement.scrollWidth : innerWidth;
+	const maxH = fullPage ? document.documentElement.scrollHeight : innerHeight;
+	const fit = (a, b, min, max) => {
+		a -= crop.padding; b += crop.padding;
+		if (b - a < min) { const c = (a + b) / 2; a = c - min / 2; b = c + min / 2; }
+		if (a < 0) { b -= a; a = 0; }
+		if (b > max) { a -= b - max; b = max; }
+		return [Math.max(0, Math.round(a)), Math.round(Math.min(b, max))];
+	};
+	const [left, right] = fit(x1, x2, crop.min_width, maxW);
+	const [top, bottom] = fit(y1, y2, crop.min_height, maxH);
+	return {x: left, y: top, width: right - left, height: bottom - top};
+}
+"""
+
+
+def crop_settings(spec: dict, shot: dict) -> dict | None:
+	"""Merged crop options for a shot, or None for an uncropped page/viewport."""
+	merged = dict(CROP)
+	for value in (spec.get("crop", True), shot.get("crop", True)):
+		if value is False:
+			return None
+		if isinstance(value, dict):
+			merged.update(value)
+	return merged
 
 
 def load_env_file(path: Path) -> None:
@@ -204,7 +277,8 @@ def main() -> int:
 			)
 			# Let charts finish resizing/animating after the injected styles changed the layout.
 			page.wait_for_timeout(int(shot.get("settle_ms", 300)))
-			missing = page.evaluate(HIGHLIGHT_JS, [shot.get("highlights", []), spec.get("color", BOX_COLOR)])
+			color = shot.get("color", spec.get("color", BOX_COLOR))
+			missing = page.evaluate(HIGHLIGHT_JS, [shot.get("highlights", []), color])
 			page.wait_for_timeout(int(shot.get("settle_ms", 300)))
 			# Things that must be open in the picture but close when boxes are drawn (dropdown menus).
 			try:
@@ -213,7 +287,10 @@ def main() -> int:
 			except Exception as e:
 				print(f"WARN {shot['name']}: post action failed: {str(e).splitlines()[0]}")
 			file = out / f"{shot['name']}.png"
-			page.screenshot(path=str(file), full_page=shot.get("full_page", True))
+			full_page = shot.get("full_page", True)
+			crop = crop_settings(spec, shot)
+			clip = page.evaluate(CROP_JS, [shot.get("crop_include", []), crop, full_page]) if crop else None
+			page.screenshot(path=str(file), full_page=full_page, clip=clip)
 			if missing:
 				failures += 1
 				print(f"WARN {file}: highlight selector not found: {', '.join(missing)}")

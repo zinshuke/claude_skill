@@ -1,16 +1,17 @@
 ---
 name: admin-guide-screenshots
-description: Write step-by-step admin guides for a web admin panel (Joomla by default) where every step has a full-page screenshot with a red box and a numbered badge on the field or section the step talks about. Runs an intake questionnaire, reviews the feature's code into an inventory, gets the outline approved, then captures and writes section by section, resuming across sessions. Use when the user asks for an admin guide, user manual, how-to or tutorial with screenshots, to continue such a guide, or to (re)take its screenshots.
+description: Write step-by-step admin guides for a web admin panel (Joomla by default) where every step has a screenshot cropped to the field or section the step talks about, with a colored box, a numbered badge and a short note on it. Runs an intake questionnaire, reviews the feature's code into an inventory, gets the outline approved, then captures and writes section by section, resuming across sessions. Use when the user asks for an admin guide, user manual, how-to or tutorial with screenshots, to continue such a guide, or to (re)take its screenshots.
 ---
 
 # Admin guide screenshots
 
 A guide covers ONE feature (an extension, a module of the app, one admin area), never a whole project.
-Each step = one instruction + one full-page screenshot with a red box and a badge showing the step number
-on the field/section the step is about (several targets in one step: `2a`, `2b`, `2c` in the order the
-user acts on them).
+Each step = one instruction + one screenshot of the field/section the step is about: a colored box
+(red by default), a badge with the step number and a short note saying what the box is (several
+targets in one step: `2a`, `2b`, `2c` in the order the user acts on them). The image is cropped to the
+boxes plus padding, so the reader sees the target and its surroundings, not the whole page.
 
-Everything about a guide lives in `docs/admin-guides/<guide>/` in the project:
+Everything about a guide lives in `docs/admin-guide-screenshots/<guide>/` in the project:
 
 | File | Holds |
 |---|---|
@@ -19,7 +20,15 @@ Everything about a guide lives in `docs/admin-guides/<guide>/` in the project:
 | `shots.json` | The shot list `scripts/shoot.py` runs. |
 | `img/*.png` | Captured screenshots. |
 | `<guide>-admin-guide.md` | Local Markdown copy of the guide, images linked from `img/`. Always kept, even when the main output is a Claude Doc. |
-| `index.html` | HTML page built from the Markdown copy (Phase 6). `docs/admin-guides/index.html` lists all guides. |
+| `index.html` | HTML page built from the Markdown copy (Phase 6). `docs/admin-guide-screenshots/index.html` lists all guides. |
+
+**Where results go.** Guides are for people who never open hidden folders, so everything above lives in
+the project's visible `docs/admin-guide-screenshots/` (named after this skill so it never clashes with the
+project's own `docs/` folders). Never keep a guide only in a hidden or tool folder (`.claude/`, this
+skill's or the plugin's folder, a temp or scratch folder). Found one there, or in the old
+`docs/admin-guides/`? Move its folder to `docs/admin-guide-screenshots/<guide>/`, fix the paths in its
+`guide.json` (`output_local`, `output.path`), rebuild the pages (Phase 6), and delete the old folder
+once the new pages work. End every session by giving the user the path of the guide's `index.html`.
 
 Credentials: `.claude/admin-guide.env` (`ADMIN_GUIDE_USER=` / `ADMIN_GUIDE_PASS=`, chmod 600), one per
 project, outside the skill folder. Never in `guide.json`, a shot list, the skill folder or the guide.
@@ -30,7 +39,8 @@ the project root.
 
 ## Phase 0: find or start the guide
 
-1. List `docs/admin-guides/*/guide.json`. If the request names a guide that exists ("continue the SiteKit
+1. List `docs/admin-guide-screenshots/*/guide.json`. Also check `docs/admin-guides/*/guide.json` and
+   hidden folders, and move what you find there as described in "Where results go". If the request names a guide that exists ("continue the SiteKit
    guide"), load it, show a one-line status per section, skip answered intake questions, and go to the
    first section that is not `written`.
 2. No guide yet and the feature is not named: discover candidates and ask which one.
@@ -58,7 +68,9 @@ Round 2: how to capture
 6. **Privacy**: what to blur: account emails · account/property IDs · API keys/secrets · nothing.
 7. **Domain shown**: the local URL as-is, or note that the reader's URLs will differ (screenshots
    always show the real local URL; never fake it).
-8. **Style**: red box + numbered badge, full page, 1440×900 (default) or changes.
+8. **Style**: box color (red `#e5262f` default, or the brand color), images cropped to the boxes with
+   60 px padding (default) or full page, numbered badge + short note on each box, 1440×900 viewport.
+   Store it in `answers.style` and set `color` / `crop` at the top of `shots.json` from it.
 
 Write the answers to `guide.json` (`answers`) before going further.
 
@@ -103,7 +115,7 @@ approval**. Order capture so "empty/before" states come first: they disappear on
 
 Claude Doc: if `guide.json.doc.url` exists, reuse it (read it first; never recreate). Otherwise create the
 doc with one pending block per approved section (follow the docs connector's instructions), then store
-`doc.url`, `doc.id` and `doc.body_node` in `guide.json`. Markdown only: `docs/admin-guides/<guide>/<guide>-admin-guide.md` unless
+`doc.url`, `doc.id` and `doc.body_node` in `guide.json`. Markdown only: `docs/admin-guide-screenshots/<guide>/<guide>-admin-guide.md` unless
 the user chose another path; store it in `guide.json.output.path`.
 
 ## Phase 5: per section: capture → check → write
@@ -116,10 +128,21 @@ if it needs the user, say exactly what to do and wait.
    {"name": "byo-02-credentials",
     "url": "/administrator/index.php?option=com_x&view=settings",
     "actions": [{"fill": ["#client_id", "123-example.apps.googleusercontent.com"]}],
-    "highlights": [{"selector": ".mb-3:has(#client_id)", "label": "2a"},
-                   {"selector": "#adminForm button[type=submit]", "label": "2b"}]}
+    "highlights": [{"selector": ".mb-3:has(#client_id)", "label": "2a", "note": "Paste the Client ID"},
+                   {"selector": "#adminForm button[type=submit]", "label": "2b", "note": "Save"}]}
    ```
-   - `"badge": "right"` or `"top"` on a highlight moves its badge when the default (left) would cover something.
+   - `"note"` on every highlight: 2 to 8 words in the guide's language saying what the box is or what to
+     do there ("Paste the Client ID", "Shows the connection status"). It is drawn next to the badge.
+   - `"color"`: any CSS color, at the top of `shots.json` for the whole guide (default `#e5262f`), on a
+     shot, or on one highlight (e.g. green for "result", red for "action"). The badge text switches to
+     black on light colors.
+   - Cropping: by default each image is cropped to its boxes and notes plus padding, at least 800×400.
+     Tune it with `"crop": {"padding": 60, "min_width": 800, "min_height": 400}` at the top or on a shot;
+     `"crop": false` keeps the whole page (overview shots of a screen). `"crop_include": [selectors]`
+     widens the crop to other things the reader must see (an open dropdown, the message after save).
+     Several boxes far apart give a big crop: split them into separate shots instead.
+   - `"badge": "right"`, `"top"` or `"bottom"` on a highlight moves its badge and note when the default
+     (left) would cover something; when a spot has no room the next one is used.
    - `"post_actions"`: actions run after the boxes are drawn, for menus that close when the page scrolls
      (box the button, then open its menu). `"full_page": false` for pop-up dialogs (viewport only).
    - `"settle_ms"` (default 300) waits before and after drawing boxes; use ~2500 on pages with charts so they finish animating.
@@ -134,11 +157,12 @@ if it needs the user, say exactly what to do and wait.
    - `blur` (from the privacy answer) and `hide` (debug bars, cookie banners), global or per shot.
 2. Run from the project root:
    ```bash
-   python3 <skill>/scripts/shoot.py docs/admin-guides/<guide>/shots.json \
-       --out docs/admin-guides/<guide>/img --only <shot names>
+   python3 <skill>/scripts/shoot.py docs/admin-guide-screenshots/<guide>/shots.json \
+       --out docs/admin-guide-screenshots/<guide>/img --only <shot names>
    ```
    `WARN … selector not found` = fix the selector, retake with `--only`.
-3. Look at every PNG (Read tool): box on the right element, badge readable, blurred items blurred, no
+3. Look at every PNG (Read tool): box on the right element, badge and note readable and not covering
+   another box, crop showing enough to find the spot on the screen, blurred items blurred, no
    debug output or PHP notices. Retake until right.
 4. Publish: Claude Doc → upload the PNGs as assets to the doc's URL, create a blob per asset, embed
    `![Step N: …](blob/<id>)` under its step (docs connector `topic.uploads`); store asset and blob ids in
@@ -147,7 +171,7 @@ if it needs the user, say exactly what to do and wait.
 5. Write the section (replace its pending block) and set its status to `written` (or `partial` with a
    note of what is missing) in `guide.json`. Record screenshots that still need a state in the
    section's `missing` list.
-6. Update the local copy `docs/admin-guides/<guide>/<guide>-admin-guide.md` with the same section,
+6. Update the local copy `docs/admin-guide-screenshots/<guide>/<guide>-admin-guide.md` with the same section,
    images as `img/<name>.png`. Write it yourself: the docs export replaces images with placeholders.
    If the doc was edited by someone else, read it first and bring their changes into the copy.
 
@@ -159,16 +183,17 @@ After a session that wrote or changed sections (and always when a guide is finis
 python3 <skill>/scripts/build_html.py            # all guides + index
 python3 <skill>/scripts/build_html.py --guide <guide>
 python3 <skill>/scripts/build_html.py --guide <guide> --embed   # one self-contained file
-python3 <skill>/scripts/build_html.py --zip       # + docs/admin-guides-html-<date>.zip
+python3 <skill>/scripts/build_html.py --zip       # + docs/admin-guide-screenshots-html-<date>.zip
 ```
 
-- Output: `docs/admin-guides/<guide>/index.html` (screenshots linked from `img/`) and
-  `docs/admin-guides/index.html` (a card per guide). Title, audience, language and the online link
+- Output: `docs/admin-guide-screenshots/<guide>/index.html` (screenshots linked from `img/`) and
+  `docs/admin-guide-screenshots/index.html` (a card per guide). Title, audience, language and the online link
   come from `guide.json`; the content comes from `<guide>-admin-guide.md`, so update that first.
 - The page has a contents sidebar with search, numbered step markers, captions from the alt text,
-  click-to-zoom screenshots, light/dark mode and a print/PDF layout.
+  click-to-zoom screenshots, light/dark mode and a print/PDF layout. Step markers take the `color` of
+  the guide's `shots.json`, so they match the badges in the screenshots.
 - `--zip [FILE]` packs the index, the guide pages and only the screenshots they use (no guide.json,
-  shots.json, inventory or Markdown) into one zip that unzips to an `admin-guides/` folder; combine
+  shots.json, inventory or Markdown) into one zip that unzips to an `admin-guide-screenshots/` folder; combine
   with `--guide` for one guide. Use it when the user wants to send or host the guides. Unzip it once
   to a temporary folder and check every image link resolves before handing it over.
 - `--embed` inlines the screenshots (a few MB) so the page can be emailed or attached; rebuild without
@@ -181,6 +206,7 @@ python3 <skill>/scripts/build_html.py --zip       # + docs/admin-guides-html-<da
 - Numbered steps. Each starts with the action and names UI labels in bold exactly as on screen
   ("Click **Save & Close**"); its number matches the badge.
 - Image right under its step; alt text "Step N: <what it shows>".
+- The step text and the box notes agree: a note is the short form of what the step says about that box.
 - Prerequisites (permission, state) once at the top of the section.
 - Steps outside the site (Google Cloud Console, email) are named as such; their screenshots come from
   the user.
@@ -189,7 +215,7 @@ python3 <skill>/scripts/build_html.py --zip       # + docs/admin-guides-html-<da
 ## Other projects and apps
 
 Install it as a plugin, copy this folder into another project's `.claude/skills/`, or move it to
-`~/.claude/skills/` for all projects. Per project: `.claude/admin-guide.env` and `docs/admin-guides/`. For a non-Joomla admin, add
+`~/.claude/skills/` for all projects. Per project: `.claude/admin-guide.env` and `docs/admin-guide-screenshots/`. For a non-Joomla admin, add
 the login form to `shots.json`:
 `"login": {"url": "/admin/login", "user": "#email", "pass": "#password", "submit": "button[type=submit]", "done": "nav"}`.
 Needs Python 3 + `pip install playwright`; uses Playwright's Chromium, or installed Google Chrome as fallback.

@@ -1,6 +1,8 @@
 {
 	"base_url": "http://localhost:3000",
 	"viewport": {"width": 1440, "height": 900},
+	"color": "#e5262f",
+	"crop": {"padding": 60, "min_width": 800, "min_height": 400},
 	"hide": [".phpdebugbar", "#system-debug"],
 	"blur": [],
 	"shots": [
@@ -8,7 +10,7 @@
 			"name": "byo-01-redirect-uri",
 			"url": "/administrator/index.php?option=com_sitekit&view=settings",
 			"highlights": [
-				{"selector": ".mb-3:has(#redirect_uri)", "label": "1"}
+				{"selector": ".mb-3:has(#redirect_uri)", "label": "1", "note": "Copy this redirect URI"}
 			]
 		},
 		{
@@ -19,9 +21,9 @@
 				{"fill": ["#client_secret", "GOCSPX-example-secret"]}
 			],
 			"highlights": [
-				{"selector": ".mb-3:has(#client_id)", "label": "2a"},
-				{"selector": ".mb-3:has(#client_secret)", "label": "2b"},
-				{"selector": "#adminForm button[type=submit]", "label": "2c"}
+				{"selector": ".mb-3:has(#client_id)", "label": "2a", "note": "Paste the Client ID"},
+				{"selector": ".mb-3:has(#client_secret)", "label": "2b", "note": "Paste the Client secret"},
+				{"selector": "#adminForm button[type=submit]", "label": "2c", "note": "Save", "color": "#16a34a"}
 			]
 		}
 	]

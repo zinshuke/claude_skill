@@ -4,14 +4,14 @@
 Usage:
     python3 build_html.py [GUIDES_DIR] [--guide NAME ...] [--embed]
 
-GUIDES_DIR defaults to docs/admin-guides. For each <guide>/ folder with a guide.json and a
+GUIDES_DIR defaults to docs/admin-guide-screenshots. For each <guide>/ folder with a guide.json and a
 <guide>-admin-guide.md, writes <guide>/index.html (images linked from img/). Also writes
 GUIDES_DIR/index.html listing every guide.
 
 --embed  inline the screenshots as data URIs, so a guide page is one file you can email or
          attach (larger: a few MB per guide).
 --zip [FILE]  also pack the index page, the guide pages and the screenshots they use into a zip
-         (default docs/admin-guides-html-<date>.zip). Working files are left out.
+         (default docs/admin-guide-screenshots-html-<date>.zip). Working files are left out.
 
 Needs: pip install markdown
 """
@@ -68,7 +68,7 @@ section.guide>ol{counter-reset:step;list-style:none;padding:0;margin:20px 0}
 section.guide>ol>li{counter-increment:step;position:relative;padding:0 0 18px 48px;margin-bottom:6px;border-left:2px solid var(--line);margin-left:15px}
 section.guide>ol>li:last-child{border-left-color:transparent}
 section.guide>ol>li::before{content:counter(step);position:absolute;left:-16px;top:-2px;width:30px;height:30px;border-radius:50%%;
-background:var(--accent);color:#fff;font-weight:700;font-size:15px;display:grid;place-items:center;border:2px solid var(--panel);box-shadow:0 1px 4px rgba(0,0,0,.25)}
+background:var(--marker,var(--accent));color:var(--marker-text,#fff);font-weight:700;font-size:15px;display:grid;place-items:center;border:2px solid var(--panel);box-shadow:0 1px 4px rgba(0,0,0,.25)}
 section.guide>ol>li>p:first-child{margin-top:0}
 figure{margin:14px 0 6px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px}
 figure img{display:block;width:100%%;height:auto;border-radius:6px;cursor:zoom-in}
@@ -109,6 +109,26 @@ lb.onclick=()=>lb.classList.remove('open');
 document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('open')});
 })();
 """
+
+
+def marker_style(folder: Path) -> str:
+	"""Step markers in the box color of the guide's shots.json, so they match the badges."""
+	try:
+		color = json.loads((folder / "shots.json").read_text()).get("color")
+	except (OSError, ValueError):
+		return ""
+	if not isinstance(color, str) or not re.fullmatch(r"#?[\w-]+", color.strip()):
+		return ""
+	color = color.strip()
+	text = "#fff"
+	hexa = re.fullmatch(r"#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})", color)
+	if hexa:
+		h = hexa.group(1)
+		h = "".join(c * 2 for c in h) if len(h) == 3 else h
+		r, g, b = (int(h[i:i + 2], 16) for i in (0, 2, 4))
+		if 0.299 * r + 0.587 * g + 0.114 * b > 160:
+			text = "#111"
+	return f"<style>:root{{--marker:{color};--marker-text:{text}}}</style>"
 
 
 def slug(text: str) -> str:
@@ -210,6 +230,7 @@ def build_guide(folder: Path, embed: bool) -> dict | None:
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title)}</title>
 <style>{CSS}</style>
+{marker_style(folder)}
 </head>
 <body>
 <div class="layout">
@@ -284,13 +305,15 @@ def build_index(root: Path, guides: list[dict]) -> Path:
 
 def main() -> None:
 	parser = argparse.ArgumentParser()
-	parser.add_argument("root", nargs="?", default="docs/admin-guides")
+	parser.add_argument("root", nargs="?", default="docs/admin-guide-screenshots")
 	parser.add_argument("--guide", nargs="*", help="only these guide folders")
 	parser.add_argument("--embed", action="store_true", help="inline screenshots (single-file pages)")
 	parser.add_argument("--zip", nargs="?", const="", default=None, metavar="FILE",
 		help="also zip the pages and their screenshots (default: <root>-html-<date>.zip next to the guides folder)")
 	args = parser.parse_args()
 	root = Path(args.root)
+	if not root.is_dir():
+		sys.exit(f"No guides folder at {root}. Run from the project root, or pass the folder that holds the guides.")
 
 	built = []
 	for folder in sorted(p for p in root.iterdir() if p.is_dir()):
